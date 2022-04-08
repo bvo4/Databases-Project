@@ -22,14 +22,6 @@ CREATE TABLE topic (
   tid INT NOT NULL primary key,
   tname VARCHAR(50),
   hierarchy INT NOT NULL);
-CREATE TABLE q_keyword (
-  qid INT NOT NULL references questions(qid),
-  keyword VARCHAR(45) NOT NULL
-);
-CREATE TABLE a_keyword (
-  aid INT NOT NULL references answers(aid),
-  keyword VARCHAR(45) NOT NULL
-);
 CREATE TABLE post_question (
   qid INT references questions(qid),
   uid INT references users(uid),
@@ -60,16 +52,6 @@ INSERT INTO questions (qid, tid, title, body) VALUES (2, 4, 'HOW TO PAY TAXES', 
 INSERT INTO questions (qid, tid, title, body) VALUES (3, 2, 'HOW TO GROW PLANT', 'My crops keep dying when I feed it coca-cola.  What am I doing wrong.');
 INSERT INTO questions (qid, tid, title, body) VALUES (4, 5, 'HOW TO HACK', 'Hackerman keeps demanding ransom in bittycoin.  How do I pay.');
 INSERT INTO questions (qid, tid, title, body) VALUES (5, 1, 'HOW DO I FLY', 'I try  flapping my arms, but it doesn\'t work.');
-INSERT INTO a_keyword(aid, keyword) VALUES (1, 'Hack');
-INSERT INTO a_keyword(aid, keyword) VALUES (2, 'FLY');
-INSERT INTO a_keyword(aid, keyword) VALUES (3, 'PLANT');
-INSERT INTO a_keyword(aid, keyword) VALUES (4, 'ADDITION');
-INSERT INTO a_keyword(aid, keyword) VALUES (5, 'TAXES');
-INSERT INTO q_keyword(qid, keyword) VALUES (1, 'BITCOIN');
-INSERT INTO q_keyword(qid, keyword) VALUES (2, 'FLY');
-INSERT INTO q_keyword(qid, keyword) VALUES (3, 'IRS');
-INSERT INTO q_keyword(qid, keyword) VALUES (4, 'CROPS');
-INSERT INTO q_keyword(qid, keyword) VALUES (5, 'IRS');
 INSERT INTO answers (aid, body) VALUES (1, 'You send your bitcoins to this address:  [PLACEHOLDER]');
 INSERT INTO answers (aid, body) VALUES (2, '1+1=2');
 INSERT INTO answers (aid, body) VALUES (3, 'Plants cannot subsist off cola products.  Try something that isn\'t lethal.');
