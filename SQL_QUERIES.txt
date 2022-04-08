@@ -12,16 +12,25 @@ CREATE TABLE answers (
   aid INT NOT NULL primary key,
   body VARCHAR(99) NOT NULL
   );
-CREATE TABLE  questions (
-  qid INT NOT NULL primary key,
-   tid INT references topic(tid),
-  title VARCHAR(20) NOT NULL,
-  body VARCHAR(90) 
-  );
 CREATE TABLE topic (
   tid INT NOT NULL primary key,
   tname VARCHAR(50),
   hierarchy INT NOT NULL);
+CREATE TABLE subtopic (
+  stid INT NOT NULL primary key,
+  sname VARCHAR(50)
+  );
+CREATE TABLE  questions (
+  qid INT NOT NULL primary key,
+  tid INT references topic(tid),
+  title VARCHAR(20) NOT NULL,
+  body VARCHAR(90) 
+  );
+CREATE TABLE likes (
+  aid int references answers(aid),
+  uid int references users(uid),
+  points int
+  );
 CREATE TABLE post_question (
   qid INT references questions(qid),
   uid INT references users(uid),
