@@ -48,6 +48,10 @@ CREATE TABLE post_answers (
   best boolean not null,
   timeposted DATETIME NOT NULL
   );
+create table question_topic(
+  qid INT references questions(qid),
+  stid INT references subtopics(stid)
+);
 INSERT INTO topic (tid, tname, hierarchy) VALUES (1, 'Computer Science', 1);
 INSERT INTO topic (tid, tname, hierarchy) VALUES (2, 'Biology', 1);
 INSERT INTO topic (tid, tname, hierarchy) VALUES (3, 'Mathmatics', 1);
