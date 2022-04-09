@@ -24,7 +24,7 @@ CREATE TABLE subtopic (
 CREATE TABLE  questions (
   qid INT NOT NULL primary key,
   stid INT references subtopic(stid),
-  title VARCHAR(20) NOT NULL,
+  title VARCHAR(60) NOT NULL,
   body VARCHAR(90) 
   );
 CREATE TABLE likes (
