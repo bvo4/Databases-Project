@@ -10,7 +10,7 @@ CREATE TABLE users (
   );
 CREATE TABLE answers (
   aid INT NOT NULL primary key,
-  body VARCHAR(99) NOT NULL
+  body VARCHAR(999) NOT NULL
   );
 CREATE TABLE topic (
   tid INT NOT NULL primary key,
