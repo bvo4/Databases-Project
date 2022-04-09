@@ -23,7 +23,6 @@ CREATE TABLE subtopic (
   );
 CREATE TABLE  questions (
   qid INT NOT NULL primary key,
-  tid INT references topic(tid),
   stid INT references subtopic(stid),
   title VARCHAR(20) NOT NULL,
   body VARCHAR(90) 
@@ -48,10 +47,7 @@ CREATE TABLE post_answers (
   best boolean not null,
   timeposted DATETIME NOT NULL
   );
-create table question_topic(
-  qid INT references questions(qid),
-  stid INT references subtopics(stid)
-);
+  
 INSERT INTO topic (tid, tname, hierarchy) VALUES (1, 'Computer Science', 1);
 INSERT INTO topic (tid, tname, hierarchy) VALUES (2, 'Biology', 1);
 INSERT INTO topic (tid, tname, hierarchy) VALUES (3, 'Mathmatics', 1);
@@ -69,11 +65,11 @@ insert into subtopic(stid, tid, sname) VALUES (4, 4, "Microeconomics");
 insert into subtopic(stid, tid, sname) VALUES (4, 5, "Other");
 insert into subtopic(stid, tid, sname) VALUES (5, 1, "CyberSecurity");
 INSERT INTO subtopic(stid, tid, sname) VALUES ('6', '5', 'Other');
-INSERT INTO questions (qid, tid, stid, title, body) VALUES (1, 3, 3, 'HOW TO 1+1', 'HELP, HOW DO I COMMIT 1+1');
-INSERT INTO questions (qid, tid, stid, title, body) VALUES (2, 4, 4, 'HOW TO PAY TAXES', 'Help, the government is inquiring about my car\'s extended warranty');
-INSERT INTO questions (qid, tid, stid, title, body) VALUES (3, 2, 2, 'HOW TO GROW PLANT', 'My crops keep dying when I feed it coca-cola.  What am I doing wrong.');
-INSERT INTO questions (qid, tid, stid, title, body) VALUES (4, 5, 5, 'HOW TO HACK', 'Hackerman keeps demanding ransom in bittycoin.  How do I pay.');
-INSERT INTO questions (qid, tid, stid, title, body) VALUES (5, 1, 6, 'HOW DO I FLY', 'I try  flapping my arms, but it doesn\'t work.');
+INSERT INTO questions (qid, stid, title, body) VALUES (1, 3, 'HOW TO 1+1', 'HELP, HOW DO I COMMIT 1+1');
+INSERT INTO questions (qid, stid, title, body) VALUES (2, 4, 'HOW TO PAY TAXES', 'Help, the government is inquiring about my car\'s extended warranty');
+INSERT INTO questions (qid, stid, title, body) VALUES (3, 2, 'HOW TO GROW PLANT', 'My crops keep dying when I feed it coca-cola.  What am I doing wrong.');
+INSERT INTO questions (qid, stid, title, body) VALUES (4, 5, 'HOW TO HACK', 'Hackerman keeps demanding ransom in bittycoin.  How do I pay.');
+INSERT INTO questions (qid, stid, title, body) VALUES (5, 6, 'HOW DO I FLY', 'I try  flapping my arms, but it doesn\'t work.');
 INSERT INTO answers (aid, body) VALUES (1, 'You send your bitcoins to this address:  [PLACEHOLDER]');
 INSERT INTO answers (aid, body) VALUES (2, '1+1=2');
 INSERT INTO answers (aid, body) VALUES (3, 'Plants cannot subsist off cola products.  Try something that isn\'t lethal.');
@@ -97,8 +93,3 @@ INSERT INTO post_answers(uid, qid, aid, grade, weight, best, timeposted)
 VALUES (2, 3, 3, 0, 1, FALSE, '2023-12-09 22:59:59');
 INSERT INTO post_answers(uid, qid, aid, grade, weight, best, timeposted)
 VALUES (5, 1, 4, 0, 1, FALSE, '2019-11-11 23:55:29');
-INSERT INTO question_topic(qid, stid) VALUES (1, 3);
-INSERT INTO question_topic(qid, stid) VALUES (2, 4);
-INSERT INTO question_topic(qid, stid) VALUES (3, 2);
-INSERT INTO question_topic(qid, stid) VALUES (4, 5);
-INSERT INTO question_topic(qid, stid) VALUES (5, 6);
