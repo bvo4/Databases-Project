@@ -59,6 +59,12 @@ INSERT INTO users (uid, username, password, profile, status, city, state, countr
 INSERT INTO users (uid, username, password, profile, status, city, state, country) VALUES ('4', 'Janet1', 'password3', 'PLACEHOLDER PROFILE', 'BASIC', 'Houston', 'TX', 'US');
 INSERT INTO users (uid, username, password, profile, status, city, state, country) VALUES ('5', 'Daryl9', 'password4', 'PLACEHOLDER PROFILE', 'BASIC', 'Las Vegas', 'CA', 'US');
 
+INSERT INTO users (uid, username, password, profile, status, city, state, country) VALUES ('7', 'Darrin4', 'password6', 'PLACEHOLDER', 'BASIC', 'Austin', 'TX', 'US');
+INSERT INTO users (uid, username, password, profile, status, city, state, country) VALUES ('8', 'Mang0', 'password7', 'PLACEHOLDER', 'BASIC', 'Boston', 'NY', 'US');
+INSERT INTO users (uid, username, password, profile, status, city, state, country) VALUES ('9', 'Leffen', 'password8', 'PLACEHOLDER', 'BASIC', 'Seattle', 'WA', 'US');
+INSERT INTO users (uid, username, password, profile, status, city, state, country) VALUES ('10', 'Elphelt', 'password9', 'PLACEHOLDER', 'BASIC', 'Dallas', 'TX', 'US');
+
+
 insert into subtopic(stid, tid, sname) VALUES (1, 1, "Databases");
 insert into subtopic(stid, tid, sname) VALUES (2, 2, "Botany");
 insert into subtopic(stid, tid, sname) VALUES (3, 3, "Algebra 1");
