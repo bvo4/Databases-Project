@@ -100,6 +100,10 @@ insert into likes(aid, uid, points) values(8, 2, 1);
 insert into likes(aid, uid, points) values(7, 1, 1);
 insert into likes(aid, uid, points) values(10, 5, 1);
 insert into likes(aid, uid, points) values(9, 3, 1);
+insert into likes(aid, uid, points) values(3, 4, 1);
+insert into likes(aid, uid, points) values(3, 7, 1);
+insert into likes(aid, uid, points) values(3, 6, 1);
+insert into likes(aid, uid, points) values(3, 3, 1);
 
 INSERT INTO post_question (qid, uid, resolved, timeposted)
 VALUES (1, 3, FALSE, '2013-03-12 01:14:56');
