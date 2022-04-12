@@ -9,10 +9,10 @@ CREATE TABLE users (
   country VARCHAR(2) NOT NULL
   );
 CREATE TABLE answers (
-  aid INT NOT NULL primary key,
-  body VARCHAR(999) NOT NULL,
-  FULLTEXT KEY(body)
-  );
+  aid int NOT NULL PRIMARY KEY auto_increment,
+  body varchar(999) NOT NULL,
+  FULLTEXT(body)
+)
 CREATE TABLE topic (
   tid INT NOT NULL primary key,
   tname VARCHAR(50),
