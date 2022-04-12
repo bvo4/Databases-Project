@@ -10,7 +10,8 @@ CREATE TABLE users (
   );
 CREATE TABLE answers (
   aid INT NOT NULL primary key,
-  body VARCHAR(999) NOT NULL
+  body VARCHAR(999) NOT NULL,
+  FULLTEXT KEY(body)
   );
 CREATE TABLE topic (
   tid INT NOT NULL primary key,
@@ -21,12 +22,14 @@ CREATE TABLE subtopic (
   tid INT references topic(tid),
   sname VARCHAR(50)
   );
-CREATE TABLE  questions (
-  qid INT NOT NULL primary key,
-  stid INT references subtopic(stid),
-  title VARCHAR(60) NOT NULL,
-  body VARCHAR(90) 
-  );
+CREATE TABLE questions (
+  qid int NOT NULL,
+  stid int DEFAULT NULL,
+  title varchar(60),
+  body varchar(90) DEFAULT NULL,
+  PRIMARY KEY (qid),
+  FULLTEXT KEY (title, body)
+)
 CREATE TABLE likes (
   aid int references answers(aid),
   uid int references users(uid),
