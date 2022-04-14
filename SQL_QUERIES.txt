@@ -71,9 +71,9 @@ insert into subtopic(stid, tid, sname) VALUES (1, 1, "Databases");
 insert into subtopic(stid, tid, sname) VALUES (2, 2, "Botany");
 insert into subtopic(stid, tid, sname) VALUES (3, 3, "Algebra 1");
 insert into subtopic(stid, tid, sname) VALUES (4, 4, "Microeconomics");
-insert into subtopic(stid, tid, sname) VALUES (5, 5, "Other");
-insert into subtopic(stid, tid, sname) VALUES (6, 1, "CyberSecurity");
-INSERT INTO subtopic(stid, tid, sname) VALUES (7, 5, 'Other');
+insert into subtopic(stid, tid, sname) VALUES (5, 1, "CyberSecurity");
+insert into subtopic(stid, tid, sname) VALUES (6, 5, "Other");
+INSERT INTO subtopic(stid, tid, sname) VALUES (7, 1, 'Other');
 INSERT INTO subtopic(stid, tid, sname) VALUES (8, 2, 'Microbiology');
 INSERT INTO subtopic(stid, tid, sname) VALUES (9, 1, 'Cryptocurrency');
 
