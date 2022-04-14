@@ -12,7 +12,7 @@ CREATE TABLE answers (
   aid int NOT NULL PRIMARY KEY auto_increment,
   body varchar(999) NOT NULL,
   FULLTEXT(body)
-)
+);
 CREATE TABLE topic (
   tid INT NOT NULL primary key,
   tname VARCHAR(50),
@@ -29,7 +29,7 @@ CREATE TABLE questions (
   body varchar(90),
   PRIMARY KEY (qid),
   FULLTEXT KEY (title, body)
-)
+);
 CREATE TABLE likes (
   aid int references answers(aid),
   uid int references users(uid),
