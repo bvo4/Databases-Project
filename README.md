@@ -22,7 +22,7 @@ npm -v
 ### Clone the Repository
 The first step is to clone the repository from [GitHub](https://github.com/MilsonCodes/CSC4330-project). You can do this manually from the link by downloading the files or you can run the following command:
 ```
-git clone https://github.com/MilsonCodes/CSC4330-project.git
+https://github.com/bvo4/Databases-Project.git
 ```
 ### Install Client Dependencies
 Next you will need to install the libraries used on the frontend. To do this, navigate to the client folder using:
