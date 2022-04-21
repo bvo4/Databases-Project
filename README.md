@@ -27,7 +27,7 @@ https://github.com/bvo4/Databases-Project.git
 ### Install Client Dependencies
 Next you will need to install the libraries used on the frontend. To do this, navigate to the client folder using:
 ```
-cd CSC4330-project/client
+cd CSC6093-project/client
 ```
 Then, install the required files by running the command:
 ```
