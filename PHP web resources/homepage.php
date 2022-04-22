@@ -51,7 +51,7 @@
   
   <body>
 
-    <h2>DATABASES PROJECT TITLE:  HEADER</h2>
+    <h2 style="text-align: center">DATABASES PROJECT TITLE:  HEADER</h2>
 	
 
     <!-- We will put our React component inside this div. -->
