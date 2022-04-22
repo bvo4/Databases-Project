@@ -43,7 +43,7 @@
 </style>
 <form method="post">
 	<div class="container space-around">
-	  <button type="hidden" name = "test" class="tablink">Questions</button>
+	  <button type="hidden" name = "Questions" class="tablink">Questions</button>
 	  <button type="hidden" name = "search" class = "tablink">Search</button>
 	  <button type="hidden" name = "login" class = "tablink">Login</button>
 	</div>
@@ -69,9 +69,9 @@
 </html>
 
 <?php
-function testfun()
+function question()
 {
-   echo "Your test function on button click is working";
+   echo "This is what questions will be";
 }
 
 function login()
@@ -84,8 +84,8 @@ function search()
    echo "This will be the search";
 }
 
-if(array_key_exists('test',$_POST)){
-   testfun();
+if(array_key_exists('Questions',$_POST)){
+   question();
 }
 if(array_key_exists('search',$_POST)){
    search();
