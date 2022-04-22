@@ -39,6 +39,9 @@
   width: 25%;
   display:inline
 }
+table, th, td {
+  border:1px solid black;
+}
 
 </style>
 <form method="post">
@@ -48,7 +51,6 @@
 	  <button type="hidden" name = "login" class = "tablink">Login</button>
 	</div>
 </form>
-  
   <body>
 
     <h2 style="text-align: center">DATABASES PROJECT TITLE:  HEADER</h2>
@@ -71,7 +73,41 @@
 <?php
 function question()
 {
-   echo "This is what questions will be";
+    echo "This is what questions will be";
+	include 'db_connection_project.php';
+	$conn = OpenCon();
+
+	$sql = "select *
+			from questions, post_question, users
+			where questions.qid = post_question.qid
+			and post_question.uid = users.uid
+			";
+	$stmt = mysqli_query($conn, $sql);
+	
+	echo "<br/>
+		  <table style = 'width:100%'>
+		  <tr>
+		  <th> User ID:</th>
+		  <th> Title:  </th>
+		  <th> Body:  </th>
+		  <th> Date:  </th>
+		  </tr>
+		";
+	while($row = mysqli_fetch_array($stmt))
+	{
+	
+	$test =
+			"<tr>"
+			. "<th>" . $row['uid'] ."</th> "
+			. "<th>" . $row['title'] ."</th>". "</th>"
+			. "<th>" . $row['body'] ."</th> " . "</th>"
+			. "<th>" . $row['timeposted'] . "</th>"
+			."</tr>"
+			;
+			$test = str_replace(PHP_EOL, '<br />', $test);
+			echo $test;
+			}
+	echo "</table>";
 }
 
 function login()
