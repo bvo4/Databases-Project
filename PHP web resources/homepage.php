@@ -5,6 +5,7 @@
     <title>Databases Project Title</title>
   </head>
 <style>
+
  .form{
 	 display: inline;
  }
@@ -46,22 +47,15 @@
 table, th, td {
   border:1px solid black;
 }
-
 </style>
 
+<?php
+	include 'header.php';
+	
+	$header = returnHeader();
+	echo $header;
+?>
 
-	<div class="container space-around">
-	<form action = 'question.php' method="post">
-	  <button type="hidden" name = "Questions" class="tablink" action = 'question.php'>Questions</button>
-	</form>
-	<form action='search.php' method="post">
-	  <button type="hidden" name = "search" class = "tablink">Search</button>
-	</form>
-	<form action = 'login.php' method="post">
-	  <button type="hidden" name = "login" class = "tablink">Login</button>
-	</form>
-	</div>
-</body>
   <body>
 
     <h2 style="text-align: center">DATABASES PROJECT TITLE:  HEADER</h2>
@@ -82,52 +76,6 @@ table, th, td {
 </html>
 
 <?php
-function question()
-{
-    echo "This is what questions will be";
-	include 'db_connection_project.php';
-	$conn = OpenCon();
-
-	$sql = "select *
-			from questions, post_question, users
-			where questions.qid = post_question.qid
-			and post_question.uid = users.uid
-			";
-	$stmt = mysqli_query($conn, $sql);
-	
-	echo "<br/>
-		  <table style = 'width:100%'>
-		  <tr>
-		  <th> User ID:</th>
-		  <th> Username:  </th>
-		  <th> Title:  </th>
-		  <th> Body:  </th>
-		  <th> Date:  </th>
-		  <th> View Answers:  </th>
-		  </tr>
-		";
-	while($row = mysqli_fetch_array($stmt))
-	{
-	
-	$test =
-			"<tr>"
-			. "<th>" . $row['uid'] ."</th> "
-			. "<th>" . $row['username'] ."</th> "
-			. "<th>" . $row['title'] ."</th>". "</th>"
-			. "<th>" . $row['body'] ."</th> " . "</th>"
-			. "<th>" . $row['timeposted'] . "</th>"
-			. "<th> <form method='post' action='answer.php'>
-						<button input type='link' value='View More'>View Answers </button>
-					</form>
-			  </th>"
-			."</tr>"
-			;
-			$test = str_replace(PHP_EOL, '<br />', $test);
-			echo $test;
-			}
-	echo "</table>";
-}
-
 function login()
 {
    echo "This will be the login";

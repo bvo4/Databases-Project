@@ -36,24 +36,23 @@
   cursor: pointer;
   padding: 14px 16px;
   font-size: 17px;
-  width: 25%;
+  width: 200%;
   display:inline
 }
 table, th, td {
   border:1px solid black;
 }
-
 </style>
-<form method="post">
-	<div class="container space-around">
-	  <button type="hidden" name = "Questions" class="tablink">Questions</button>
-	  <button type="hidden" name = "search" class = "tablink">Search</button>
-	  <button type="hidden" name = "login" class = "tablink">Login</button>
-	</div>
-</form>
+
+<?php
+	include 'header.php';
+	
+	$header = returnHeader();
+	echo $header;
+?>
   <body>
 
-    <h2 style="text-align: center">ANSWERS PAGE</h2>
+    <h2 style="text-align: center">SEARCH PAGE</h2>
 	
 
     <!-- We will put our React component inside this div. -->

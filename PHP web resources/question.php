@@ -36,24 +36,22 @@
   cursor: pointer;
   padding: 14px 16px;
   font-size: 17px;
-  width: 25%;
+  width: 200%;
   display:inline
 }
 table, th, td {
   border:1px solid black;
 }
-
 </style>
-<form method="post">
-	<div class="container space-around">
-	  <button type="hidden" name = "Questions" class="tablink">Questions</button>
-	  <button type="hidden" name = "search" class = "tablink">Search</button>
-	  <button type="hidden" name = "login" class = "tablink">Login</button>
-	</div>
-</form>
+<?php
+	include 'header.php';
+	
+	$header = returnHeader();
+	echo $header;
+?>
   <body>
 
-    <h2 style="text-align: center">ANSWERS PAGE</h2>
+    <h2 style="text-align: center">QUESTIONS PAGE</h2>
 	
 
     <!-- We will put our React component inside this div. -->
@@ -87,7 +85,6 @@ function question()
 	echo "<br/>
 		  <table style = 'width:100%'>
 		  <tr>
-		  <th> User ID:</th>
 		  <th> Username:  </th>
 		  <th> Title:  </th>
 		  <th> Body:  </th>
@@ -100,13 +97,12 @@ function question()
 	
 	$test =
 			"<tr>"
-			. "<th>" . $row['uid'] ."</th> "
 			. "<th>" . $row['username'] ."</th> "
 			. "<th>" . $row['title'] ."</th>". "</th>"
 			. "<th>" . $row['body'] ."</th> " . "</th>"
 			. "<th>" . $row['timeposted'] . "</th>"
 			. "<th> <form method='post' action='answer.php'>
-						<button input type='link' value='View More'>View Answers </button>
+						<button input type='link' name='answer' value=$row[uid]>View More</button>
 					</form>
 			  </th>"
 			."</tr>"
@@ -116,17 +112,6 @@ function question()
 			}
 	echo "</table>";
 }
-
-function login()
-{
-   echo "This will be the login";
-}
-
-function search()
-{
-   echo "This will be the search";
-}
-
 if(array_key_exists('Questions',$_POST)){
    question();
 }

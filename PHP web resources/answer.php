@@ -36,25 +36,26 @@
   cursor: pointer;
   padding: 14px 16px;
   font-size: 17px;
-  width: 25%;
+  width: 200%;
   display:inline
 }
 table, th, td {
   border:1px solid black;
 }
-
 </style>
-<form method="post">
-	<div class="container space-around">
-	  <button type="hidden" name = "Questions" class="tablink">Questions</button>
-	  <button type="hidden" name = "search" class = "tablink">Search</button>
-	  <button type="hidden" name = "login" class = "tablink">Login</button>
-	</div>
-</form>
-  <body>
-
-    <h2 style="text-align: center">ANSWERS PAGE</h2>
+<?php
+	include 'header.php';
 	
+	$header = returnHeader();
+	echo $header;
+	
+	$phpVariable = $_POST['answer'];
+	echo "USER ID: ";
+	echo $phpVariable;
+?>
+
+  <body>
+    <h2 style="text-align: center">ANSWERS PAGE</h2>
 
     <!-- We will put our React component inside this div. -->
     <div id="like_button_container"></div>
@@ -71,51 +72,6 @@ table, th, td {
 </html>
 
 <?php
-function question()
-{
-    echo "This is what questions will be";
-	include 'db_connection_project.php';
-	$conn = OpenCon();
-
-	$sql = "select *
-			from questions, post_question, users
-			where questions.qid = post_question.qid
-			and post_question.uid = users.uid
-			";
-	$stmt = mysqli_query($conn, $sql);
-	
-	echo "<br/>
-		  <table style = 'width:100%'>
-		  <tr>
-		  <th> User ID:</th>
-		  <th> Username:  </th>
-		  <th> Title:  </th>
-		  <th> Body:  </th>
-		  <th> Date:  </th>
-		  <th> View Answers:  </th>
-		  </tr>
-		";
-	while($row = mysqli_fetch_array($stmt))
-	{
-	
-	$test =
-			"<tr>"
-			. "<th>" . $row['uid'] ."</th> "
-			. "<th>" . $row['username'] ."</th> "
-			. "<th>" . $row['title'] ."</th>". "</th>"
-			. "<th>" . $row['body'] ."</th> " . "</th>"
-			. "<th>" . $row['timeposted'] . "</th>"
-			. "<th> <form method='post' action='answer.php'>
-						<button input type='link' value='View More'>View Answers </button>
-					</form>
-			  </th>"
-			."</tr>"
-			;
-			$test = str_replace(PHP_EOL, '<br />', $test);
-			echo $test;
-			}
-	echo "</table>";
-}
 
 function login()
 {
