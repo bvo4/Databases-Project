@@ -5,10 +5,6 @@
     <title>Databases Project Title</title>
   </head>
 <style>
- .form{
-	 display: inline;
- }
-
  .header {
   padding: 5px;
   text-align: center;
@@ -40,7 +36,7 @@
   cursor: pointer;
   padding: 14px 16px;
   font-size: 17px;
-  width: 200%;
+  width: 25%;
   display:inline
 }
 table, th, td {
@@ -48,23 +44,16 @@ table, th, td {
 }
 
 </style>
-
-
+<form method="post">
 	<div class="container space-around">
-	<form action = 'question.php' method="post">
-	  <button type="hidden" name = "Questions" class="tablink" action = 'question.php'>Questions</button>
-	</form>
-	<form action='search.php' method="post">
+	  <button type="hidden" name = "Questions" class="tablink">Questions</button>
 	  <button type="hidden" name = "search" class = "tablink">Search</button>
-	</form>
-	<form action = 'login.php' method="post">
 	  <button type="hidden" name = "login" class = "tablink">Login</button>
-	</form>
 	</div>
-</body>
+</form>
   <body>
 
-    <h2 style="text-align: center">DATABASES PROJECT TITLE:  HEADER</h2>
+    <h2 style="text-align: center">ANSWERS PAGE</h2>
 	
 
     <!-- We will put our React component inside this div. -->
