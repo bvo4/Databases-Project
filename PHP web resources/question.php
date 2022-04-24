@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Databases Project Title</title>
+    <title>Databases Project</title>
   </head>
 
   
@@ -53,6 +53,7 @@ table, th, td {
 	$header = returnHeader();
 	echo $header;
 ?>
+
   <body>
 
     <h2 style="text-align: center">QUESTIONS PAGE</h2>

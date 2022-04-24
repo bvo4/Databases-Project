@@ -12,7 +12,7 @@
 	echo $header;
 ?>
  
-    <title>Bootstrap Tutorial for Beginners</title>
+    <title>Login Page</title>
  
     <!-- Bootstrap CSS will be here -->
 </head>
@@ -34,23 +34,24 @@
 </div>
 <form action='#' method='post'>
     <table class='table table-hover'>
-  
+		<form action="POST" action = 'login.php'>
         <tr>
             <td>Username</td>
-            <td><input type='text' name='name' class='form-control' required></td>
+            <td><input type='text' name='username' class='form-control' required></td>
         </tr>
   
         <tr>
             <td>Password</td>
-            <td><input type='text' name='contact_number' class='form-control' required></td>
+            <td><input type='text' name='password' class='form-control' required></td>
         </tr>
   
         <tr>
             <td></td>
             <td>
-                <button type="submit" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-plus"></span> Login
-                </button>
+					<button type="submit" name='login' class="btn btn-primary">
+						<span class="glyphicon glyphicon-plus"></span> Login
+					</button>
+				</form>
             </td>
         </tr>
   
@@ -59,6 +60,38 @@
 </div>
   
 <!-- Bootstrap JavaScript will be here -->
+
+<?php
+
+function login()
+{
+	include 'db_connection_project.php';
+	$conn = OpenCon();
+	
+	$name = $_POST['username']; //note i used $_POST since you have a post form **method='post'**
+	$password = $_POST['password'];
+	
+	$sql = "select username, `password`
+			from users
+			where username = '$name'
+			and `password` = '$password'
+			";	
+	$stmt = mysqli_query($conn, $sql);
+	
+	if (mysqli_num_rows($stmt) > 0) {
+		echo "LOGIN SUCCESS";
+	} else {
+		echo "LOGIN FAILED.  PASSWORD OR USERNAME DOES NOT MATCH";
+	}
+}
+
+if(isset($_POST['login']))
+{
+	login();
+}
+
+
+?>
   
 </body>
 </html>
