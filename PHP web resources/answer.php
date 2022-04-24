@@ -45,13 +45,8 @@ table, th, td {
 </style>
 <?php
 	include 'header.php';
-	
 	$header = returnHeader();
 	echo $header;
-	
-	$phpVariable = $_POST['answer'];
-	echo "USER ID: ";
-	echo $phpVariable;
 ?>
 
   <body>
@@ -70,6 +65,51 @@ table, th, td {
 
   </body>
 </html>
+
+<?php
+
+	$qid = $_POST['answer'];
+	
+	include 'db_connection_project.php';
+	$conn = OpenCon();
+
+	$sql = "select * 
+			from answers, post_answers, users
+			where post_answers.qid = $qid
+			and answers.aid = post_answers.aid
+			and users.uid = post_answers.uid";
+	$stmt = mysqli_query($conn, $sql);
+	
+	echo "<br/>
+		  <table class = 'table table-dark table-hover' style = 'width:100%'>
+		  <tr>
+		  <th> Aid:  </th>
+		  <th> Body:  </th>
+		  <th> Username:  </th>
+		  <th> Likes:  </th>
+		  <th> Date:  </th>
+		  <th>Leave a like?</th>
+		  </tr>
+		";
+	while($row = mysqli_fetch_array($stmt))
+	{
+	
+	$test =
+			"<tr>"
+			. "<th>" . $row['aid'] ."</th> "
+			. "<th>" . $row['body'] ."</th>". "</th>"
+			. "<th>" . $row['username'] ."</th> " . "</th>"
+			. "<th>" . $row['grade'] . "</th>"
+			. "<th>" . $row['timeposted'] . "</th>"
+			. "<th><script src='like_button.js'></script></th>"
+			."</tr>"
+			;
+			$test = str_replace(PHP_EOL, '<br />', $test);
+			echo $test;
+			}
+	echo "</table>";
+	
+?>
 
 <?php
 

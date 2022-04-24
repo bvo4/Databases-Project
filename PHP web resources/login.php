@@ -1,139 +1,82 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Databases Project Title</title>
-  </head>
-<style>
- .header {
-  padding: 5px;
-  text-align: center;
-  background: #1abc9c;
-  color: white;
-  font-size: 15px;
-}
-.container {
-  display: flex;
-}
-.container.space-around {
-  padding: 5px;
-  text-align: center;
-  background: #808080;
-  color: white;
-  font-size: 15px;
-  justify-content: space-around;
-}
-.container.space-between {  
-  justify-content: space-between;
-}
-
-.tablink {
-  background-color: #555;
-  color: white;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  font-size: 17px;
-  width: 25%;
-  display:inline
-}
-table, th, td {
-  border:1px solid black;
-}
-
-</style>
-<form method="post">
-	<div class="container space-around">
-	  <button type="hidden" name = "Questions" class="tablink">Questions</button>
-	  <button type="hidden" name = "search" class = "tablink">Search</button>
-	  <button type="hidden" name = "login" class = "tablink">Login</button>
-	</div>
-</form>
-  <body>
-
-    <h2 style="text-align: center">ANSWERS PAGE</h2>
-	
-
-    <!-- We will put our React component inside this div. -->
-    <div id="like_button_container"></div>
-
-    <!-- Load React. -->
-    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
-    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-
-    <!-- Load our React component. -->
-    <script src="like_button.js"></script>
-
-  </body>
-</html>
+<html lang="en">
+<head>
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <?php
-function question()
-{
-    echo "This is what questions will be";
-	include 'db_connection_project.php';
-	$conn = OpenCon();
-
-	$sql = "select *
-			from questions, post_question, users
-			where questions.qid = post_question.qid
-			and post_question.uid = users.uid
-			";
-	$stmt = mysqli_query($conn, $sql);
-	
-	echo "<br/>
-		  <table style = 'width:100%'>
-		  <tr>
-		  <th> User ID:</th>
-		  <th> Username:  </th>
-		  <th> Title:  </th>
-		  <th> Body:  </th>
-		  <th> Date:  </th>
-		  <th> View Answers:  </th>
-		  </tr>
-		";
-	while($row = mysqli_fetch_array($stmt))
-	{
-	
-	$test =
-			"<tr>"
-			. "<th>" . $row['uid'] ."</th> "
-			. "<th>" . $row['username'] ."</th> "
-			. "<th>" . $row['title'] ."</th>". "</th>"
-			. "<th>" . $row['body'] ."</th> " . "</th>"
-			. "<th>" . $row['timeposted'] . "</th>"
-			. "<th> <form method='post' action='answer.php'>
-						<button input type='link' value='View More'>View Answers </button>
-					</form>
-			  </th>"
-			."</tr>"
-			;
-			$test = str_replace(PHP_EOL, '<br />', $test);
-			echo $test;
-			}
-	echo "</table>";
-}
-
-function login()
-{
-   echo "This will be the login";
-}
-
-function search()
-{
-   echo "This will be the search";
-}
-
-if(array_key_exists('Questions',$_POST)){
-   question();
-}
-if(array_key_exists('search',$_POST)){
-   search();
-}
-if(array_key_exists('login',$_POST)){
-   login();
-}
+	include 'header.php';
+	$header = returnHeader();
+	echo $header;
 ?>
+ 
+    <title>Bootstrap Tutorial for Beginners</title>
+ 
+    <!-- Bootstrap CSS will be here -->
+</head>
+<body>
+  
+<!-- navigation bar will be here -->
+<div class="container mt-5">
+    <div class="row">
+    <div class="col-sm">
+        <h1>Login Page</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <div class="alert alert-success">
+            <strong>Good day!</strong> This is an example alert.
+        </div>
+    </div>
+</div>
+<form action='#' method='post'>
+    <table class='table table-hover'>
+  
+        <tr>
+            <td>Username</td>
+            <td><input type='text' name='name' class='form-control' required></td>
+        </tr>
+  
+        <tr>
+            <td>Password</td>
+            <td><input type='text' name='contact_number' class='form-control' required></td>
+        </tr>
+  
+        <tr>
+            <td></td>
+            <td>
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus"></span> Login
+                </button>
+            </td>
+        </tr>
+  
+    </table>
+</form>
+</div>
+  
+<!-- Bootstrap JavaScript will be here -->
+  
+</body>
+</html>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<!-- javascript for bootstrap -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+</script>
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+</script>
+  
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+</script>
+

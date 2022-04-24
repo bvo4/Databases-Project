@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <title>Databases Project Title</title>
   </head>
+
+  
 <style>
  .header {
   padding: 5px;
@@ -43,9 +45,11 @@ table, th, td {
   border:1px solid black;
 }
 </style>
+
+
+
 <?php
 	include 'header.php';
-	
 	$header = returnHeader();
 	echo $header;
 ?>
@@ -69,9 +73,6 @@ table, th, td {
 </html>
 
 <?php
-function question()
-{
-    echo "This is what questions will be";
 	include 'db_connection_project.php';
 	$conn = OpenCon();
 
@@ -83,7 +84,7 @@ function question()
 	$stmt = mysqli_query($conn, $sql);
 	
 	echo "<br/>
-		  <table style = 'width:100%'>
+		  <table style = 'width:100%' class='table table-dark table-hover'>
 		  <tr>
 		  <th> Username:  </th>
 		  <th> Title:  </th>
@@ -102,7 +103,7 @@ function question()
 			. "<th>" . $row['body'] ."</th> " . "</th>"
 			. "<th>" . $row['timeposted'] . "</th>"
 			. "<th> <form method='post' action='answer.php'>
-						<button input type='link' name='answer' value=$row[uid]>View More</button>
+						<button input type='link' name='answer' value=$row[qid]>View More</button>
 					</form>
 			  </th>"
 			."</tr>"
@@ -111,7 +112,6 @@ function question()
 			echo $test;
 			}
 	echo "</table>";
-}
 if(array_key_exists('Questions',$_POST)){
    question();
 }
