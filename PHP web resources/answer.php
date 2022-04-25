@@ -113,11 +113,6 @@ table, th, td {
 
 <?php
 
-function login()
-{
-   echo "This will be the login";
-}
-
 function search()
 {
    echo "This will be the search";
