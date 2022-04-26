@@ -3,7 +3,7 @@
 	$header = '
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 	<!-- javascript for bootstrap -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -33,10 +33,21 @@
 			</li>
 			<li class="nav-item">
 				<form action = "login.php" method="post">
-				<a class="nav-link" href= "login.php">Login</a>
+				<a class="nav-link" href= "login.php">Topic</a>
 				</form>
 			</li>
-			<!-- drop down will be here -->
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					User
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" href="login.php">Login</a>
+					<a class="dropdown-item" href="#">Profile</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href = "login.php?logout=true">Sign Out</a>
+				</div>
+			</li>
 		</ul>
 		<form class="form-inline my-2 my-lg-0" method="POST" action="search.php">
     <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
@@ -47,4 +58,14 @@
 
 	return $header;
 	}
+	
+	function question()
+	{
+		//echo "TEST";
+	}
+	
+	if(array_key_exists('login',$_POST)){
+	   question();
+	}
+
 ?>

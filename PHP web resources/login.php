@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,13 +24,11 @@
         <h1>Login Page</h1>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm">
-        <div class="alert alert-success">
-            <strong>Good day!</strong> This is an example alert.
-        </div>
-    </div>
-</div>
+<?php
+
+	$alert = alert_status();
+	echo $alert;
+?>
 <form action='#' method='post'>
     <table class='table table-hover'>
 		<form action="POST" action = 'login.php'>
@@ -51,6 +48,9 @@
 					<button type="submit" name='login' class="btn btn-primary">
 						<span class="glyphicon glyphicon-plus"></span> Login
 					</button>
+					<button type="submit" name='register' color="secondary" class="btn btn-danger">
+						<span class="glyphicon glyphicon-plus"></span> Register
+					</button>
 				</form>
             </td>
         </tr>
@@ -62,6 +62,43 @@
 <!-- Bootstrap JavaScript will be here -->
 
 <?php
+
+if(isset($_POST['login']))
+{
+	login();
+}
+
+else if(isset($_POST['register']))
+{
+	register();
+}
+else if (isset($_GET['logout'])) {
+  logout();
+}
+
+function alert_status()
+{
+	session_start();
+	if(isset($_SESSION['user']))
+	  $greenthing = '<div class="row">
+					<div class="col-sm">
+						<div class="alert alert-success">
+							<strong>Good day!</strong> You are logged in as ' . $_SESSION["user"]
+					. '	</div>
+					</div>
+					</div>';
+	else
+	{
+	  $greenthing = '<div class="row">
+					<div class="col-sm">
+						<div class="alert alert-danger">
+							<strong>Good day!</strong> You are not logged in.
+						</div>
+					</div>
+					</div>';
+	}
+	return $greenthing;
+}
 
 function login()
 {
@@ -79,37 +116,35 @@ function login()
 	$stmt = mysqli_query($conn, $sql);
 	
 	if (mysqli_num_rows($stmt) > 0) {
-		echo "LOGIN SUCCESS";
+		$_SESSION['user'] = $name;
+		echo "LOGIN SUCCESSFUL:  REFRESHING IN ONE MOMENT";
+	    $page = $_SERVER['PHP_SELF'];
+	    $sec = "1";
+	    header("Refresh: $sec; url=$page");
+		
 	} else {
 		echo "LOGIN FAILED.  PASSWORD OR USERNAME DOES NOT MATCH";
 	}
 }
 
-if(isset($_POST['login']))
-{
-	login();
+function logout() {
+
+  echo "LOGGING OUT";
+  
+  //Apparently need to start the session again to destroy it
+  session_unset();
+  session_destroy();
+  $page = $_SERVER['PHP_SELF'];
+  $sec = "1";
+  header("Refresh: $sec; url=$page");
 }
 
+function register()
+{
+	echo "REGISTER";
+}
 
 ?>
   
 </body>
 </html>
-
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-<!-- javascript for bootstrap -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-</script>
-  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-</script>
-  
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-</script>
-
