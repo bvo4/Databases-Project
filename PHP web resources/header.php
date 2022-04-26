@@ -1,5 +1,14 @@
 <?php
 	function returnHeader(){
+		
+	session_start();
+	$profile = 'User Page';
+	if(isset($_SESSION['user']))
+	{
+		$profile = $_SESSION['user'];
+	}
+					
+		
 	$header = '
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -39,11 +48,11 @@
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
 					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					User
+					' . $profile . '
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="login.php">Login</a>
-					<a class="dropdown-item" href="#">Profile</a>
+					<a class="dropdown-item" href="profile.php">Profile</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href = "login.php?logout=true">Sign Out</a>
 				</div>

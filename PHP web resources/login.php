@@ -78,7 +78,6 @@ else if (isset($_GET['logout'])) {
 
 function alert_status()
 {
-	session_start();
 	if(isset($_SESSION['user']))
 	  $greenthing = '<div class="row">
 					<div class="col-sm">
