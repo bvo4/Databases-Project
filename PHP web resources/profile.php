@@ -41,7 +41,7 @@
 			<table class='table table-hover'>
 				<tr>
 					<td>Username</td>
-					<td><input type='text' name='username' value='$row[uid]' class='form-control' required></td>
+					<td>$row[uid]</td>
 				</tr>
 		  
 				<tr>
@@ -52,7 +52,7 @@
 		 
 				 <tr>
 					<td>Profile</td>
-					<td><input type='text' name='profile' value='$row[profile]' class='form-control' required></td>
+					<td><input type='text' name='profile' style='height:150px;' value='$row[profile]' class='form-control' required></td>
 				</tr>
 
 				<tr>
@@ -78,10 +78,9 @@
 				<tr>
 					<td></td>
 					<td>
-							<button type='submit' name='login' class='btn btn-primary'>
+							<button type='submit' name='save' class='btn btn-primary'>
 								<span class='glyphicon glyphicon-plus'></span> Save
 							</button>
-
 					</td>
 				</tr>
 		  
@@ -126,6 +125,22 @@ function alert_status()
 	return $greenthing;
 }
 
+function update()
+{
+	echo "UPDATE";
+	$conn = OpenCon();
+	$sql = "UPDATE users
+			SET 
+			where uid = $_SESSION[uid]
+			";
+	$stmt = mysqli_query($conn, $sql);	
+	$row = mysqli_fetch_array($stmt);
+}
+
+if(isset($_POST['save']))
+{
+	update();
+}
 
 ?>
 </body>
