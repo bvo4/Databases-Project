@@ -63,12 +63,15 @@ table, th, td {
 	echo $button;
 	?>
 
+
+
   </body>
 </html>
 
 <?php
 	include 'db_connection_project.php';
 	$conn = OpenCon();
+
 
 	$sql = "select *
 			from questions, post_question, users

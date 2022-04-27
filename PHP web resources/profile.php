@@ -25,18 +25,20 @@
     </div>
 </div>
 <?php
-	include 'db_connection_project.php';
-	$conn = OpenCon();
-	$sql = "select *
-			from users
-			where uid = $_SESSION[uid]
-			";
-	$stmt = mysqli_query($conn, $sql);	
-	$row = $row = mysqli_fetch_array($stmt);
 
-	
 	if(isset($_SESSION['uid']))
 	{
+
+		include 'db_connection_project.php';
+		$conn = OpenCon();
+		
+		$sql = "select *
+				from users
+				where uid = $_SESSION[uid]
+				";
+		$stmt = mysqli_query($conn, $sql);	
+		$row = mysqli_fetch_array($stmt);
+
 		$form = "<form action='#' method='post'>
 			<table class='table table-hover'>
 				<tr>
@@ -103,7 +105,9 @@
 
 function alert_status()
 {
-	if(isset($_SESSION['user']))
+	if(isset($_GET['topic']))
+	{
+
 	  $greenthing = '<div class="row">
 					<div class="col-sm">
 						<div class="alert alert-success">
@@ -111,6 +115,7 @@ function alert_status()
 					. '	</div>
 					</div>
 					</div>';
+	}
 	else
 	{
 	  $greenthing = '<div class="row">

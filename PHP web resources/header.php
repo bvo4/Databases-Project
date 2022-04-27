@@ -41,8 +41,8 @@
 				</form>
 			</li>
 			<li class="nav-item">
-				<form action = "login.php" method="post">
-				<a class="nav-link" href= "login.php">Topic</a>
+				<form action = "browse.php" method="post">
+				<a class="nav-link" href= "browse.php">Browse</a>
 				</form>
 			</li>
 			<li class="nav-item dropdown">

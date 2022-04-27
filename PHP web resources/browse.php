@@ -57,17 +57,7 @@ table, th, td {
 ?>
 
   <body>
-
     <h2 style="text-align: center">Browsing PAGE</h2>
-
-	<?php
-	include 'reactjs.php';
-	
-	$button = load_button();
-	echo $button;
-	?>
-
-</link>
   </body>
 </html>
 
@@ -84,11 +74,15 @@ function grab_topics()
 			";
 	$stmt = mysqli_query($conn, $sql);
 	$b = 0;
+
+	echo "<form action = 'search.php' action='get'>";
+
 	while($row = mysqli_fetch_array($stmt))
 	{
 	$test =
-			'<input src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"type="checkbox"'
-			.'id=tn'
+			'<input src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" name="topic[]" type="checkbox" value="'
+			. $row['tname']
+			.'" id=tn'
 			. $b
 			. ' hidden class="cb-btn"><label class="btn btn-primary"'
 			. 'for="tn'
@@ -104,6 +98,11 @@ function grab_topics()
 	$b = $b + 1;
 	echo "</select>";
 	}
+	
+	echo "<button type='submit' name='search' value='topic' class='btn btn-primary'>
+			Submit
+			</button>
+		</form>";
 }
 
 function grab_subtopics()
@@ -114,6 +113,9 @@ function grab_subtopics()
 			";
 	$stmt = mysqli_query($conn, $sql);
 	$b = 0;
+	
+	echo "<form action = 'search.php' action='get'>";
+
 	while($row = mysqli_fetch_array($stmt))
 	{
 	
@@ -132,8 +134,13 @@ function grab_subtopics()
 			;
 			$test = str_replace(PHP_EOL, '<br />', $test);
 			echo $test;
-	$b = $b + 1;
-	}
-	echo "</select>";
+			$b = $b + 1;
+			echo "</select>";
+			}
+	
+		echo "<button type='submit' name='search' value='topic' class='btn btn-primary'>
+				Submit
+				</button>
+			</form>";
 }
 ?>
