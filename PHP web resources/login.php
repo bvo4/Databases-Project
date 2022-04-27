@@ -107,7 +107,7 @@ function login()
 	$name = $_POST['username']; //note i used $_POST since you have a post form **method='post'**
 	$password = $_POST['password'];
 	
-	$sql = "select username, `password`
+	$sql = "select uid, username, `password`
 			from users
 			where username = '$name'
 			and `password` = '$password'
@@ -115,7 +115,11 @@ function login()
 	$stmt = mysqli_query($conn, $sql);
 	
 	if (mysqli_num_rows($stmt) > 0) {
+		$row = mysqli_fetch_array($stmt);
+		
 		$_SESSION['user'] = $name;
+		$_SESSION['uid'] = $row['uid'];
+		
 		echo "LOGIN SUCCESSFUL:  REFRESHING IN ONE MOMENT";
 	    $page = $_SERVER['PHP_SELF'];
 	    $sec = "1";
@@ -144,6 +148,5 @@ function register()
 }
 
 ?>
-  
 </body>
 </html>

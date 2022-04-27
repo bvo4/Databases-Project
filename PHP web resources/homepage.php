@@ -51,8 +51,6 @@ table, th, td {
 
 <?php
 	include 'header.php';
-	include 'session.php';
-	
 
 	$header = returnHeader();
 	echo $header;

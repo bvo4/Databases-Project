@@ -46,8 +46,6 @@ table, th, td {
 }
 </style>
 
-
-
 <?php
 	include 'header.php';
 	$header = returnHeader();
