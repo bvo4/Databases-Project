@@ -107,15 +107,7 @@ table, th, td {
 			;
 			$test = str_replace(PHP_EOL, '<br />', $test);
 			echo $test;
-			}
+	}
 	echo "</table>";
-if(array_key_exists('Questions',$_POST)){
-   question();
-}
-if(array_key_exists('search',$_POST)){
-   search();
-}
-if(array_key_exists('login',$_POST)){
-   login();
-}
+
 ?>

@@ -18,37 +18,80 @@ echo $header;
 <?php
 	if(isset($_GET['topic']))
 	{
-		topic_search();
+		$topic = ''; 
+		$subtopic = '';
+		for($b = 0; $b < sizeof($_GET['topic'], 0); $b++)
+		{
+			$temp = substr($_GET['topic'][$b], 0, 4);
+			if($temp == "top_")
+			{
+				$temp = substr($_GET['topic'][$b], 4);
+				$topic .= " " . substr($_GET['topic'][$b], 4);
+			}
+			else if($temp == "sub_")
+			{
+				$temp = substr($_GET['topic'][$b], 4);
+				$subtopic .= substr($_GET['topic'][$b], 4);
+			}
+		}
+		
+		$topic = explode(' ', $topic);
+		$subtopic = explode (' ', $subtopic);
+		echo "TOPIC: ";
+		print_r ($topic);
+		echo "<br/>";
+		
+		echo "SUBTOPIC: ";
+		print_r ($subtopic);
+		echo "<br/>";
+		
+		topic_search($topic, $subtopic);
 	}
+
 	else if (isset($_POST['search']))
 	{
 		keyword_search();
 	}
 
 
-function topic_search()
+function topic_search($topic, $subtopic)
 {
-	$search_topic = ' or topic.tname = "' . array_shift($_GET['topic']) . '"';
-	$tid = explode(' ', $_GET['search']);
-	
-	for($b = 0; $b < sizeof($tid, 0); $b++)
+	if(isset($topic))
 	{
-		$search_topic.= " or topic.tname = '$tid[$b]'";
+		$search_topic = ' and topic.tname in ("' . array_shift($topic) . '"';
+		$tid = $topic;
+		
+		for($b = 0; $b < sizeof($topic, 0); $b++)
+		{	
+			$search_topic.= ", '$topic[$b]'";
+		}
+		$search_topic.= ')';
 	}
-
+	
+	if(isset($subtopic))
+	{
+		$search_subtopic = ' and subtopic.sname in ("' . array_shift($subtopic) . '"';
+		$tid = $subtopic;
+		
+		for($b = 0; $b < sizeof($subtopic, 0); $b++)
+		{	
+			$search_subtopic.= ", '$subtopic[$b]'";
+		}
+		$search_subtopic.= ')';
+	}
 	include 'db_connection_project.php';
 	$conn = OpenCon();
 	
-	echo "SEARCH TOPIC NOT FINISHED.  TO DO";
-	
 	$sql = "select *
-			from post_question, users, topic, questions join subtopic on questions.stid
-			where questions.qid = post_question.qid
-			and post_question.uid = users.uid
+			from post_question, users, topic, questions, subtopic
+			where questions.qid = post_question.qid 
 			and questions.stid = subtopic.stid
+			and post_question.uid = users.uid 
 			$search_topic
-			group by users.uid
+			$search_subtopic
 			";
+	
+	echo "SQL: " . $sql;
 	
 	$stmt = mysqli_query($conn, $sql);
 

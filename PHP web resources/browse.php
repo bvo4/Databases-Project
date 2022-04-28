@@ -80,7 +80,7 @@ function grab_topics()
 	while($row = mysqli_fetch_array($stmt))
 	{
 	$test =
-			'<input src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" name="topic[]" type="checkbox" value="'
+			'<input src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" name="topic[]" type="checkbox" value="top_'
 			. $row['tname']
 			.'" id=tn'
 			. $b
@@ -98,11 +98,6 @@ function grab_topics()
 	$b = $b + 1;
 	echo "</select>";
 	}
-	
-	echo "<button type='submit' name='search' value='topic' class='btn btn-primary'>
-			Submit
-			</button>
-		</form>";
 }
 
 function grab_subtopics()
@@ -113,21 +108,18 @@ function grab_subtopics()
 			";
 	$stmt = mysqli_query($conn, $sql);
 	$b = 0;
-	
-	echo "<form action = 'search.php' action='get'>";
 
 	while($row = mysqli_fetch_array($stmt))
 	{
-	
 	$test =
-			'<input src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"type="checkbox"'
+			'<input src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" name="topic[]" type="checkbox" value ="sub_'
+			. $row['sname'] . '"'
 			.'id=sn'
 			. $b
 			. ' hidden class="cb-btn"><label class="btn btn-primary"'
 			. 'for="sn'
 			. $b 
 			. '">'
-			
 			.$row['sname']
 			.'</label>'
 			. '<br/> '
@@ -136,11 +128,11 @@ function grab_subtopics()
 			echo $test;
 			$b = $b + 1;
 			echo "</select>";
-			}
+	}
 	
-		echo "<button type='submit' name='search' value='topic' class='btn btn-primary'>
-				Submit
-				</button>
-			</form>";
+	echo "<button type='submit' name='submit' class='btn btn-primary'>
+			Submit
+			</button>
+		</form>";
 }
 ?>
