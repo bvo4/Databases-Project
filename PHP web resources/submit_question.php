@@ -21,7 +21,7 @@
     </div>
 </div>
 
-<form method="post" action ='submit.php'>
+<form method="post" action ='submit_question.php'>
     <table class='table table-hover'>
         <tr>
             <td>Question Title</td>

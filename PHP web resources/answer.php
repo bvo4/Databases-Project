@@ -47,6 +47,14 @@ table, th, td {
 	include 'header.php';
 	$header = returnHeader();
 	echo $header;
+	
+	if(isset($_SESSION['uid']))
+	{
+		echo "<th> <form method='post' action='submit_answer.php'>
+			<button input type='link' name='qid' value=$_POST[qid]>Submit Answer</button>
+			</form>
+		</th>";
+	}
 ?>
 
   <body>
