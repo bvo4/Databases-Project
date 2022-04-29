@@ -51,80 +51,117 @@ table, th, td {
 
   <body>
     <h2 style="text-align: center">ANSWERS PAGE</h2>
-
-    <!-- We will put our React component inside this div. -->
-    <div id="like_button_container"></div>
-
-    <!-- Load React. -->
-    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
-    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-
-    <!-- Load our React component. -->
-    <script src="like_button.js"></script>
-
   </body>
 </html>
 
 <?php
-
-	$qid = $_POST['answer'];
-	
 	include 'db_connection_project.php';
 	$conn = OpenCon();
-
-	$sql = "select * 
-			from answers, post_answers, users
-			where post_answers.qid = $qid
-			and answers.aid = post_answers.aid
-			and users.uid = post_answers.uid";
-	$stmt = mysqli_query($conn, $sql);
-	
-	echo "<br/>
-		  <table class = 'table table-dark table-hover' style = 'width:100%'>
-		  <tr>
-		  <th> Aid:  </th>
-		  <th> Body:  </th>
-		  <th> Username:  </th>
-		  <th> Likes:  </th>
-		  <th> Date:  </th>
-		  <th>Leave a like?</th>
-		  </tr>
-		";
-	while($row = mysqli_fetch_array($stmt))
+		
+	if(isset($_POST['like']) && isset($_POST['qid']))
 	{
+		$qid = $_POST['qid'];
+		$aid = $_POST['like'];
+		echo "LIKE: " . $_POST['like'];
+		
+		$sql = "INSERT INTO likes(aid, uid, points) VALUES ($aid, $_SESSION[uid], 1)";
+		mysqli_query($conn, $sql);
+	}
 	
-	$test =
-			"<tr>"
-			. "<th>" . $row['aid'] ."</th> "
-			. "<th>" . $row['body'] ."</th>". "</th>"
-			. "<th>" . $row['username'] ."</th> " . "</th>"
-			. "<th>" . $row['grade'] . "</th>"
-			. "<th>" . $row['timeposted'] . "</th>"
-			. "<th><script src='like_button.js'></script></th>"
-			."</tr>"
-			;
-			$test = str_replace(PHP_EOL, '<br />', $test);
-			echo $test;
+	if(isset($_POST['qid']))
+	{
+		$qid = $_POST['qid'];
+		$sql = "select * 
+				from answers, post_answers, users
+				where post_answers.qid = $qid
+				and answers.aid = post_answers.aid
+				and users.uid = post_answers.uid";
+		print_sql($conn, $sql, $qid);
+	}
+	else
+	{
+		echo "ERROR: NO MATCHING QUESTION FOUND";
+	}
+	
+	
+	function print_sql($conn, $sql, $qid)
+	{
+
+		$like_stmt = null;
+		
+		if(isset($_SESSION['uid']))
+		{
+			$uid = $_SESSION['uid'];
+			echo "UID: " . $_SESSION['uid'];
+			$sql_like_check = "select * from users, likes
+								where likes.uid = users.uid
+								and users.uid = $uid
+								;";
+			$like_stmt = mysqli_query($conn, $sql_like_check);
+		}
+		
+		$stmt = mysqli_query($conn, $sql);
+		echo "<br/>
+			  <table class = 'table table-dark table-hover' style = 'width:100%'>
+			  <tr>
+			  <th> Aid:  </th>
+			  <th> Body:  </th>
+			  <th> Username:  </th>
+			  <th> Likes:  </th>
+			  <th> Date:  </th>
+			  <th>Leave a like?</th>
+			  </tr>
+			";
+		while($row = mysqli_fetch_array($stmt))
+		{
+			$like_match = check_likes($like_stmt, $row['aid']);
+	
+			$test =
+					"<tr>"
+					. "<th>" . $row['aid'] ."</th> "
+					. "<th>" . $row['body'] ."</th>". "</th>"
+					. "<th>" . $row['username'] ."</th> " . "</th>"
+					. "<th>" . $row['grade'] . "</th>"
+					. "<th>" . $row['timeposted'] . "</th>";
+					
+				if(isset($like_stmt) && $like_match)
+				{
+					$test .="<th>	<button type='submit' name='like' value=$row[aid] class='btn btn-secondary'>
+								You have already liked this
+							</button></th>";
+				}
+				else
+				{
+					$test .="<form method='post' action='answer.php?qid=$qid'>"
+					. "<input type='hidden' name='qid' value=$qid>"
+					. "<th>	<button type='submit' name='like' value=$row[aid] class='btn btn-danger'>
+								Like
+							</button></th>"
+					. "</form>";
+				}
+					$test .="</tr>"
+					;
+					$test = str_replace(PHP_EOL, '<br />', $test);
+					echo $test;
+		}
+			echo "</table>";
+	}
+	
+	function check_likes($like_stmt, $question_aid)
+	{
+		$like_match = False;
+		if(isset($like_stmt))
+		{
+			while($like_check = mysqli_fetch_array($like_stmt))
+			{
+				if($like_check['aid'] == $question_aid)
+				{
+					$like_match = True;
+					break;
+				}
 			}
-	echo "</table>";
+		}
+		return $like_match;
+	}
 	
-?>
-
-<?php
-
-function search()
-{
-   echo "This will be the search";
-}
-
-if(array_key_exists('Questions',$_POST)){
-   question();
-}
-if(array_key_exists('search',$_POST)){
-   search();
-}
-if(array_key_exists('login',$_POST)){
-   login();
-}
 ?>

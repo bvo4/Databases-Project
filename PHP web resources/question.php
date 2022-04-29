@@ -77,6 +77,7 @@ table, th, td {
 			from questions, post_question, users
 			where questions.qid = post_question.qid
 			and post_question.uid = users.uid
+			order by timeposted desc
 			";
 	$stmt = mysqli_query($conn, $sql);
 	
@@ -100,7 +101,7 @@ table, th, td {
 			. "<th>" . $row['body'] ."</th> " . "</th>"
 			. "<th>" . $row['timeposted'] . "</th>"
 			. "<th> <form method='post' action='answer.php'>
-						<button input type='link' name='answer' value=$row[qid]>View More</button>
+						<button input type='link' name='qid' value=$row[qid]>View More</button>
 					</form>
 			  </th>"
 			."</tr>"
