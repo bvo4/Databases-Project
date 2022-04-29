@@ -62,7 +62,6 @@ table, th, td {
 	{
 		$qid = $_POST['qid'];
 		$aid = $_POST['like'];
-		echo "LIKE: " . $_POST['like'];
 		
 		$sql = "INSERT INTO likes(aid, uid, points) VALUES ($aid, $_SESSION[uid], 1)";
 		mysqli_query($conn, $sql);
@@ -92,7 +91,6 @@ table, th, td {
 		if(isset($_SESSION['uid']))
 		{
 			$uid = $_SESSION['uid'];
-			echo "UID: " . $_SESSION['uid'];
 			$sql_like_check = "select * from users, likes
 								where likes.uid = users.uid
 								and users.uid = $uid
