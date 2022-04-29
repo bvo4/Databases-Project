@@ -72,8 +72,6 @@ function get_question()
 			from questions
 			where qid = $_POST[qid]";
 			
-	echo "QID: " . $sql;
-			
 	$stmt = mysqli_query($conn, $sql);
 	
 	return mysqli_fetch_array($stmt);
