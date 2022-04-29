@@ -59,6 +59,14 @@ table, th, td {
 	<?php
 	include 'reactjs.php';
 	
+	if(isset($_SESSION['uid']))
+	{
+		echo "<th> <form method='post' action='submit.php'>
+			<button input type='link' name='question' value='$_SESSION[uid]'>Submit Question</button>
+			</form>
+		</th>";
+	}
+
 	$button = load_button();
 	echo $button;
 	?>
@@ -71,7 +79,6 @@ table, th, td {
 <?php
 	include 'db_connection_project.php';
 	$conn = OpenCon();
-
 
 	$sql = "select *
 			from questions, post_question, users
