@@ -103,7 +103,14 @@ function submit_question()
 
 if(isset($_POST['title']) && isset($_POST['body']))
 {
-	submit_question();
+	if(!isset($_POST['uid']))
+	{
+		echo "ERROR:  You should not be able to see this web page";
+	}
+	else
+	{
+		submit_question();
+	}
 }
 
 ?>

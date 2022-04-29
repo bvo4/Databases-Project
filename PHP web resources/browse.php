@@ -45,9 +45,16 @@ table, th, td {
   border:1px solid black;
 }
 .cb-btn:checked + label {
-  background-color: Red;
-  
+  background-color: Red; 
 }
+
+.center {
+margin: auto;
+width: 60%;
+padding: 10px;
+}
+
+
 </style>
 
 <?php
@@ -76,7 +83,7 @@ function grab_topics()
 	$b = 0;
 
 	echo "<form action = 'search.php' action='get'>";
-
+	echo '<div class="center btn-toolbar">';
 	while($row = mysqli_fetch_array($stmt))
 	{
 	$test =
@@ -98,6 +105,7 @@ function grab_topics()
 	$b = $b + 1;
 	echo "</select>";
 	}
+	echo "</div>";
 }
 
 function grab_subtopics()
@@ -108,6 +116,9 @@ function grab_subtopics()
 			";
 	$stmt = mysqli_query($conn, $sql);
 	$b = 0;
+
+	echo "<form action = 'search.php' action='get'>";
+	echo '<div class="center btn-toolbar">';
 
 	while($row = mysqli_fetch_array($stmt))
 	{
@@ -130,9 +141,11 @@ function grab_subtopics()
 			echo "</select>";
 	}
 	
-	echo "<button type='submit' name='submit' class='btn btn-primary'>
+	echo "</div>
+	<button type='submit' name='submit' class='btn btn-primary'>
 			Submit
 			</button>
 		</form>";
+	
 }
 ?>

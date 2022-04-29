@@ -79,7 +79,14 @@ function get_question()
 
 if(isset($_POST['aid']))
 {
-	submit_answer();
+	if(!isset($_POST['uid']))
+	{
+		echo "ERROR:  You should not be able to see this web page";
+	}
+	else
+	{
+		submit_answer();
+	}
 }
 
 if(isset($_POST['body']))

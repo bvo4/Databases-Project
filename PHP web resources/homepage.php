@@ -64,8 +64,47 @@ table, th, td {
 	<?php
 	include 'reactjs.php';
 	
-	$button = load_button();
-	echo $button;
+	include 'db_connection_project.php';
+	$conn = OpenCon();
+
+	$sql = "select *
+			from questions, post_question, users
+			where questions.qid = post_question.qid
+			and post_question.uid = users.uid
+			order by timeposted desc
+			limit 5
+			";
+	$stmt = mysqli_query($conn, $sql);
+	
+	echo "<br/>
+		  <table style = 'width:100%' class='table table-dark table-hover'>
+		  <tr>
+		  <th> Username:  </th>
+		  <th> Title:  </th>
+		  <th> Body:  </th>
+		  <th> Date:  </th>
+		  <th> View Answers:  </th>
+		  </tr>
+		";
+	while($row = mysqli_fetch_array($stmt))
+	{
+	
+	$test =
+			"<tr>"
+			. "<th>" . $row['username'] ."</th> "
+			. "<th>" . $row['title'] ."</th>". "</th>"
+			. "<th>" . $row['body'] ."</th> " . "</th>"
+			. "<th>" . $row['timeposted'] . "</th>"
+			. "<th> <form method='post' action='answer.php'>
+						<button input type='link' name='qid' value=$row[qid]>View More</button>
+					</form>
+			  </th>"
+			."</tr>"
+			;
+			$test = str_replace(PHP_EOL, '<br />', $test);
+			echo $test;
+	}
+	echo "</table>";
 	?>
 
   </body>
