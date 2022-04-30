@@ -95,13 +95,18 @@
 					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					' . $profile . '
 				</a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="login.php">Login</a>
-					<a class="dropdown-item" href="profile.php">Profile</a>
-					<a class="dropdown-item" href="submissions.php">Recently Submitted</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href = "login.php?logout=true">Sign Out</a>
-				</div>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">';
+                
+        if(isset($_SESSION['user'])){
+            $header .='<a class="dropdown-item" href="profile.php">Profile</a>
+            <a class="dropdown-item" href="submissions.php">Recently Submitted</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href = "login.php?logout=true">Sign Out</a>';
+        }
+        else{
+            $header.='<a class="dropdown-item" href="login.php">Login</a>';
+        }
+        $header .= '</div>
 			</li>
 		</ul>
 		<form class="form-inline my-2 my-lg-0" method="POST" action="search.php">
