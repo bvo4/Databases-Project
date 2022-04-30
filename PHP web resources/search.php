@@ -115,7 +115,6 @@ function search($topic, $keyword)
 			and subtopic.tid = topic.tid
 			$keyword
 			$topic
-			group by users.uid
 			";
 	echo 'SQL: ' . $sql;
 	
