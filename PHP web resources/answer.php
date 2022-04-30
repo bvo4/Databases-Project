@@ -69,55 +69,68 @@
 		}
 		
 		$stmt = mysqli_query($conn, $sql);
-		echo "<br/>
-			  <table class = 'table table-dark table-hover' style = 'width:100%'>
-			  <tr>
-			  <th> Aid:  </th>
-			  <th> Body:  </th>
-			  <th> Username:  </th>
-			  <th> Likes:  </th>
-			  <th> Date:  </th>";
-		if(isset($_SESSION['uid']))
+		$num = mysqli_num_rows($stmt);
+		if($num > 0)
 		{
-			echo"<th>Leave a like?</th>";
+			print_answer($stmt, $like_stmt, $qid);
 		}
-			 echo "</tr>";
-		while($row = mysqli_fetch_array($stmt))
+		else
 		{
-			$like_match = check_likes($like_stmt, $row['aid']);
+			echo "THERE ARE NO ANSWERS";
+		}
+	}
 	
-			$test =
-					"<tr>"
-					. "<th>" . $row['aid'] ."</th> "
-					. "<th>" . $row['body'] ."</th>". "</th>"
-					. "<th>" . $row['username'] ."</th> " . "</th>"
-					. "<th>" . $row['grade'] . "</th>"
-					. "<th>" . $row['timeposted'] . "</th>";
-					
-				if(isset($like_stmt) && $like_match)
-				{
-					$test .="<th>	<button type='submit' name='like' value=$row[aid] class='btn btn-secondary'>
-								You have already liked this
-							</button></th>";
-				}
-				else
-				{
-					$test .="<form method='post' action='answer.php?qid=$qid'>"
-					. "<input type='hidden' name='qid' value=$qid>";
-							if(isset($_SESSION['uid']))
-							{
-								$test .= "<th><button type='submit' name='like' value=$row[aid] class='btn btn-danger'>
-									Like
+	function print_answer($stmt, $like_stmt, $qid)
+	{
+			echo "<br/>
+				  <table class = 'table table-dark table-hover' style = 'width:100%'>
+				  <tr>
+				  <th> Aid:  </th>
+				  <th> Body:  </th>
+				  <th> Username:  </th>
+				  <th> Likes:  </th>
+				  <th> Date:  </th>";
+			if(isset($_SESSION['uid']))
+			{
+				echo"<th>Leave a like?</th>";
+			}
+				 echo "</tr>";
+			while($row = mysqli_fetch_array($stmt))
+			{
+				$like_match = check_likes($like_stmt, $row['aid']);
+		
+				$test =
+						"<tr>"
+						. "<th>" . $row['aid'] ."</th> "
+						. "<th>" . $row['body'] ."</th>". "</th>"
+						. "<th>" . $row['username'] ."</th> " . "</th>"
+						. "<th>" . $row['grade'] . "</th>"
+						. "<th>" . $row['timeposted'] . "</th>";
+						
+					if(isset($like_stmt) && $like_match)
+					{
+						$test .="<th>	<button type='submit' name='like' value=$row[aid] class='btn btn-secondary'>
+									You have already liked this
 								</button></th>";
-							}
-					$test .= "</form>";
-				}
-					$test .="</tr>"
-					;
-					$test = str_replace(PHP_EOL, '<br />', $test);
-					echo $test;
-		}
-			echo "</table>";
+					}
+					else
+					{
+						$test .="<form method='post' action='answer.php?qid=$qid'>"
+						. "<input type='hidden' name='qid' value=$qid>";
+								if(isset($_SESSION['uid']))
+								{
+									$test .= "<th><button type='submit' name='like' value=$row[aid] class='btn btn-danger'>
+										Like
+									</button></th>";
+								}
+						$test .= "</form>";
+					}
+						$test .="</tr>"
+						;
+						$test = str_replace(PHP_EOL, '<br />', $test);
+						echo $test;
+			}
+				echo "</table>";
 	}
 	
 	function check_likes($like_stmt, $question_aid)
