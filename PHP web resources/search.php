@@ -168,7 +168,7 @@ function search_question($title_keyword, $topic, $keyword)
 			order by timeposted desc
 			";
     
-	echo $sql;
+	//echo $sql;
     
 	$stmt = mysqli_query($conn, $sql);
 	$num = mysqli_num_rows($stmt);
