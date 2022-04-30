@@ -63,7 +63,7 @@ function topic_search($topic, $subtopic)
 {
 	if(isset($topic))
 	{
-		$search_topic = ' topic.tname in ("' . array_shift($topic) . '"';
+		$search_topic = ' and topic.tname in ("' . array_shift($topic) . '"';
 		$tid = $topic;
 		
 		for($b = 0; $b < sizeof($topic, 0); $b++)
@@ -84,8 +84,8 @@ function topic_search($topic, $subtopic)
 		$search_subtopic.= ')';
 	}
 
-	$sql = "($search_topic
-			$search_subtopic)";
+	$sql = "$search_topic
+			$search_subtopic";
 	return $sql;
 
 }
@@ -105,17 +105,20 @@ function keyword_search()
 
 function search($topic, $keyword)
 {
-	
+	include 'db_connection_project.php';
+	$conn = OpenCon();
 	$sql = "select *
-			from questions, post_question, users
+			from questions, post_question, users, subtopic, topic
 			where questions.qid = post_question.qid
-			and post_question.uid = users.uid
+			and post_question.uid = users.uid 
+			and subtopic.stid = questions.stid
+			and subtopic.tid = topic.tid
 			$keyword
 			$topic
 			group by users.uid
 			";
 	echo 'SQL: ' . $sql;
-	/*
+	
 	$stmt = mysqli_query($conn, $sql);
 	
 	echo_table();
@@ -138,7 +141,7 @@ function search($topic, $keyword)
 			echo $test;
 	}
 	echo "</table>";
-	*/
+	
 }
 
 function echo_table()
