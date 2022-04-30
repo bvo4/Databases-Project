@@ -55,7 +55,6 @@ function post_answers()
 				. "<th>" . $row['timeposted'] . "</th>"
 				."</tr>"
 				;
-					$test = str_replace(PHP_EOL, '<br />', $test);
 					echo $test;
 		}
 		echo "</table>";
@@ -105,7 +104,6 @@ function post_questions()
 					  </th>"
 					."</tr>"
 					;
-					$test = str_replace(PHP_EOL, '<br />', $test);
 					echo $test;
 			}
 			echo "</table>";

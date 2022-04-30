@@ -57,7 +57,6 @@
 			  </th>"
 			."</tr>"
 			;
-			$test = str_replace(PHP_EOL, '<br />', $test);
 			echo $test;
 	}
 	echo "</table>";

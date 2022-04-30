@@ -12,13 +12,12 @@
 	
 	if(isset($_SESSION['uid']) && isset($_POST['qid']))
 	{
-		echo "<th> <form method='post' action='submit_answer.php'>
+		echo "<th><form method='post' action='submit_answer.php'>
 			<button input type='link' name='qid' value=$_POST[qid]>Submit Answer</button>
 			</form>
 		</th>";
 	}
 ?>
-
   <body>
     <h2 style="text-align: center">ANSWERS PAGE</h2>
   </body>
@@ -28,7 +27,6 @@
 	include 'db_connection_project.php';
 	$conn = OpenCon();
 	
-	
 	if(isset($_POST['like']) && isset($_POST['qid']))
 	{
 		$qid = $_POST['qid'];
@@ -37,11 +35,11 @@
 		$sql = "INSERT INTO likes(aid, uid, points) VALUES ($aid, $_SESSION[uid], 1)";
 		mysqli_query($conn, $sql);
 	}
-	
 	if(isset($_POST['best']))
 	{
 		select_best();
 	}
+	
 	if(isset($_POST['qid']))
 	{
 		$qid = $_POST['qid'];
@@ -51,6 +49,7 @@
 				and answers.aid = post_answers.aid
 				and users.uid = post_answers.uid";
 		print_sql($conn, $sql, $qid);
+		
 	}
 	else
 	{
@@ -105,7 +104,7 @@
 		$user_question_id = grab_first_row($conn, $sql);
 		$user_question_id = $user_question_id['uid'];
 		
-		echo "<br/>
+		echo "
 			<table class = 'table table-dark table-hover' style = 'width:100%'>
 			<tr>
 			<th> Aid:  </th>
@@ -115,6 +114,7 @@
 			<th> Date:  </th>
 			<th>Leave a Like?</th>
 			<th>Select as best answer?</th></tr>";
+			
 			while($row = mysqli_fetch_array($stmt))
 			{
 				$like_match = check_likes($like_stmt, $row['aid']);
@@ -165,12 +165,11 @@
 					else
 					{
 					$test .= "
-							<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>Best Answer</button>
+							<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>This is Best Answer</button>
 							</th> ";
 					}
 					$test .="</tr>";
 					
-					$test = str_replace(PHP_EOL, '<br />', $test);
 					echo $test;
 			}
 				echo "</table>";
