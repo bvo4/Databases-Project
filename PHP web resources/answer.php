@@ -10,7 +10,7 @@
 	$header = returnHeader();
 	echo $header;
 	
-	if(isset($_SESSION['uid']))
+	if(isset($_SESSION['uid']) && isset($_POST['qid']))
 	{
 		echo "<th> <form method='post' action='submit_answer.php'>
 			<button input type='link' name='qid' value=$_POST[qid]>Submit Answer</button>
@@ -49,7 +49,14 @@
 	}
 	else
 	{
-		echo "ERROR: NO MATCHING QUESTION FOUND";
+		$greenthing = '<div class="row">
+					<div class="col-sm">
+						<div class="alert alert-danger">
+							Unfortunately, we have no answers available.
+						</div>
+					</div>
+					</div>';
+			echo $greenthing;	
 	}
 	
 	
@@ -76,7 +83,14 @@
 		}
 		else
 		{
-			echo "THERE ARE NO ANSWERS";
+		  $greenthing = '<div class="row">
+						<div class="col-sm">
+							<div class="alert alert-danger">
+								Unforutnately, there are no answers for this question.
+							</div>
+						</div>
+						</div>';
+			echo $greenthing;
 		}
 	}
 	

@@ -98,6 +98,7 @@
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="login.php">Login</a>
 					<a class="dropdown-item" href="profile.php">Profile</a>
+					<a class="dropdown-item" href="submissions.php">Recently Submitted</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href = "login.php?logout=true">Sign Out</a>
 				</div>
