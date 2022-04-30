@@ -91,6 +91,7 @@ if(isset($_POST['aid']))
 
 if(isset($_POST['body']))
 {
+	include 'reactjs.php';
 	$conn = OpenCon();
 	
 	$sql = "select aid

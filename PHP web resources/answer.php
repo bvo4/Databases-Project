@@ -99,20 +99,22 @@
 	
 	function print_answer($stmt, $like_stmt, $qid)
 	{
-			echo "<br/>
-				  <table class = 'table table-dark table-hover' style = 'width:100%'>
-				  <tr>
-				  <th> Aid:  </th>
-				  <th> Body:  </th>
-				  <th> Username:  </th>
-				  <th> Likes:  </th>
-				  <th> Date:  </th>";
-			if(isset($_SESSION['uid']))
-			{
-				echo "<th>Leave a Like?</th>";
-				echo "<th>Select as best answer?</th>";
-			}
-				 echo "</tr>";
+		include 'reactjs.php';
+		$conn = OpenCon();
+		$sql = "select uid from post_answers where qid = $qid";
+		$user_question_id = grab_first_row($conn, $sql);
+		$user_question_id = $user_question_id['uid'];
+		
+		echo "<br/>
+			<table class = 'table table-dark table-hover' style = 'width:100%'>
+			<tr>
+			<th> Aid:  </th>
+			<th> Body:  </th>
+			<th> Username:  </th>
+			<th> Likes:  </th>
+			<th> Date:  </th>
+			<th>Leave a Like?</th>
+			<th>Select as best answer?</th></tr>";
 			while($row = mysqli_fetch_array($stmt))
 			{
 				$like_match = check_likes($like_stmt, $row['aid']);
@@ -124,6 +126,9 @@
 						. "<th>" . $row['username'] ."</th> " . "</th>"
 						. "<th>" . $row['grade'] . "</th>"
 						. "<th>" . $row['timeposted'] . "</th>";
+						
+				if(isset($_SESSION['uid']) && $_SESSION['uid'] != $user_question_id)
+				{
 					if(isset($like_stmt) && $like_match)
 					{
 						$test .="<th><button type='submit' name='like' value=$row[aid] class='btn btn-secondary'>
@@ -141,16 +146,22 @@
 							</button></th>";
 						}
 					}
+				}
 					$test .= "</form>";
-					
-					if($row['best'] == False)
+					if(isset($_SESSION['uid']) && $_SESSION['uid'] == $user_question_id)
+					{
+						$test .= "
+								<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>This is your answer!</button>
+								</th> ";
+					}
+					else if($row['best'] == False)
 					{
 					$test .= "<form method='post' action='answer.php?qid=$qid'>
 							<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>Select</button>
 							</th> "
 						. "<input type='hidden' name='qid' value=$qid>
 								</form>";
-					}
+						}
 					else
 					{
 					$test .= "
