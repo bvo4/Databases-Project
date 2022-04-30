@@ -84,9 +84,11 @@ padding: 10px;
 </html>
 
 <?php
-	include 'db_connection_project.php';	
+	include 'db_connection_project.php';
+	echo '<body> Please select the following topics that you believe your answer may belong to.</body>';
 	grab_topics();
 	grab_subtopics();
+	search_options();
 	
 function grab_topics()
 {
@@ -168,8 +170,28 @@ function grab_subtopics()
 			$b = $b + 1;
 			echo "</select>";
 	}
-	
 	echo "</div>";
-	echo "</form>";
+}
+
+function search_options()
+{
+	echo '<div class="center demo btn-toolbar parent">';
+	echo	'<span>
+			<input src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" name="Check_Question" type="checkbox" id=12 class="cb-btn">
+			<label class="btn btn-success" for="12">
+				Search within Questions
+			</label>
+			</span>
+			
+			<span>
+			<input src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" name="Check_Answer" type="checkbox" id=13 class="cb-btn">
+			<label class="btn btn-success" for="13">
+				Search within Answers
+			</label>
+			</span>
+			'
+			;
+			
+	echo "</div></form>";
 }
 ?>

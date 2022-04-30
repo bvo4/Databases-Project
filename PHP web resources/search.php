@@ -16,6 +16,7 @@ echo $header;
 
 <body>
 <?php
+	include 'db_connection_project.php';
 	$topic = '';
 	$keyword = '';
 	
@@ -56,12 +57,32 @@ echo $header;
 		$title_keyword = title_search();
 	}
 	
-	echo "Search based on Questions: <br/>";
-	search_question($title_keyword, $topic, $keyword);
-	$keyword = answer_keyword_search();
+	if(isset($_POST['Check_Question']))
+	{
+		echo "Search based on Questions: <br/>";
+		search_question($title_keyword, $topic, $keyword);
+	}
 	
-	echo "Search based off Answers: <br/>";
-	search_answers($topic, $keyword);
+	if(isset($_POST['Check_Answer']))
+	{
+		$keyword = answer_keyword_search();
+		echo "Search based off Answers: <br/>";
+		search_answers($topic, $keyword);
+	}
+	if(!(isset($_POST['Check_Answer'])) && !(isset($_POST['Check_Question'])))
+	{
+	  $greenthing = '<div class="row">
+					<div class="col-sm">
+						<div class="alert alert-danger">
+							You didn\'t ask to search for anything!
+							Please specify if you want to search for answers or questions!
+						</div>
+					</div>
+					</div>';
+		echo $greenthing;
+	}
+
+
 
 function topic_search($topic, $subtopic)
 {
@@ -134,7 +155,6 @@ function question_keyword_search()
 
 function search_question($title_keyword, $topic, $keyword)
 {
-	include 'db_connection_project.php';
 	$conn = OpenCon();
 	$sql = "select *
 			from questions, post_question, users, subtopic, topic
@@ -145,30 +165,45 @@ function search_question($title_keyword, $topic, $keyword)
 			$title_keyword
 			$keyword
 			$topic
+			order by timeposted desc
 			";
 	
 	$stmt = mysqli_query($conn, $sql);
+	$num = mysqli_num_rows($stmt);
 	
-	echo_table();
-	while($row = mysqli_fetch_array($stmt))
+	if($num > 0)
 	{
-	
-	$test =
-			"<tr>"
-			. "<th>" . $row['username'] ."</th> "
-			. "<th>" . $row['title'] ."</th>". "</th>"
-			. "<th>" . $row['body'] ."</th> " . "</th>"
-			. "<th>" . $row['timeposted'] . "</th>"
-			. "<th> <form method='post' action='answer.php'>
-						<button input type='link' name='answer' value=$row[qid]>View More</button>
-					</form>
-			  </th>"
-			."</tr>"
-			;
-			echo $test;
+		echo_table();
+		while($row = mysqli_fetch_array($stmt))
+		{
+		
+		$test =
+				"<tr>"
+				. "<th>" . $row['username'] ."</th> "
+				. "<th>" . $row['title'] ."</th>". "</th>"
+				. "<th>" . $row['body'] ."</th> " . "</th>"
+				. "<th>" . $row['timeposted'] . "</th>"
+				. "<th> <form method='post' action='answer.php'>
+							<button input type='link' name='answer' value=$row[qid]>View More</button>
+						</form>
+				  </th>"
+				."</tr>"
+				;
+				echo $test;
+		}
+		echo "</table>";
 	}
-	echo "</table>";
-	
+	else
+	{
+	  $greenthing = '<div class="row">
+					<div class="col-sm">
+						<div class="alert alert-danger">
+							No Questions Found!
+						</div>
+					</div>
+					</div>';
+		echo $greenthing;
+	}
 }
 
 function echo_table()
@@ -203,35 +238,49 @@ function search_answers($topic, $keyword)
 			order by post_answers.timeposted, grade desc
 			";
 
-	echo "answer: " . $sql;
+	//echo "answer: " . $sql;
 
 	$stmt = mysqli_query($conn, $sql);
+	$num = mysqli_num_rows($stmt);
 	
-	echo "<br/>
-		  <table style = 'width:100%' class='table table-dark table-hover'>
-		  <tr>
-		  <th> Username:  </th>
-		  <th> Question Title:  </th>
-		  <th> Question Body:  </th>
-		  <th> Answer:  </th>
-		  <th> Date posted:  </th>
-		  </tr>
-		";
-	
-	while($row = mysqli_fetch_array($stmt))
+	if($num > 0)
 	{
-	$test =
-		"<tr>"
-		. "<th>" . $row['username'] ."</th> "
-		. "<th>" . $row['title'] ."</th> "
-		. "<th>" . $row['body'] ."</th>". "</th>"
-		. "<th>" . $row['answer'] ."</th> " . "</th>"
-		. "<th>" . $row['timeposted'] . "</th>"
-		."</tr>"
-		;
-		echo $test;
+		echo "<br/>
+			  <table style = 'width:100%' class='table table-dark table-hover'>
+			  <tr>
+			  <th> Username:  </th>
+			  <th> Question Title:  </th>
+			  <th> Question Body:  </th>
+			  <th> Answer:  </th>
+			  <th> Date posted:  </th>
+			  </tr>
+			";
+		
+		while($row = mysqli_fetch_array($stmt))
+		{
+		$test =
+			"<tr>"
+			. "<th>" . $row['username'] ."</th> "
+			. "<th>" . $row['title'] ."</th> "
+			. "<th>" . $row['body'] ."</th>". "</th>"
+			. "<th>" . $row['answer'] ."</th> " . "</th>"
+			. "<th>" . $row['timeposted'] . "</th>"
+			."</tr>"
+			;
+			echo $test;
+		}
 	}
-	
+	else
+	{
+	  $greenthing = '<div class="row">
+					<div class="col-sm">
+						<div class="alert alert-danger">
+							No Answers Found!
+						</div>
+					</div>
+					</div>';
+		echo $greenthing;
+	}
 }
 
 ?>
