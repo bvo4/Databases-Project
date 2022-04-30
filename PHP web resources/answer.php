@@ -76,10 +76,12 @@
 			  <th> Body:  </th>
 			  <th> Username:  </th>
 			  <th> Likes:  </th>
-			  <th> Date:  </th>
-			  <th>Leave a like?</th>
-			  </tr>
-			";
+			  <th> Date:  </th>";
+		if(isset($_SESSION['uid']))
+		{
+			echo"<th>Leave a like?</th>";
+		}
+			 echo "</tr>";
 		while($row = mysqli_fetch_array($stmt))
 		{
 			$like_match = check_likes($like_stmt, $row['aid']);
@@ -101,11 +103,14 @@
 				else
 				{
 					$test .="<form method='post' action='answer.php?qid=$qid'>"
-					. "<input type='hidden' name='qid' value=$qid>"
-					. "<th>	<button type='submit' name='like' value=$row[aid] class='btn btn-danger'>
-								Like
-							</button></th>"
-					. "</form>";
+					. "<input type='hidden' name='qid' value=$qid>";
+							if(isset($_SESSION['uid']))
+							{
+								$test .= "<th><button type='submit' name='like' value=$row[aid] class='btn btn-danger'>
+									Like
+								</button></th>";
+							}
+					$test .= "</form>";
 				}
 					$test .="</tr>"
 					;
