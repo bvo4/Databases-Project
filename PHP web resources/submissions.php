@@ -17,9 +17,23 @@ echo $header;
 <body>
 <?php
 include 'db_connection_project.php';
-post_questions();
-post_answers();
 
+if(isset($_SESSION['uid']))
+{	
+	post_questions();
+	post_answers();
+}
+else
+{
+	  $greenthing = '<div class="row">
+					<div class="col-sm">
+						<div class="alert alert-danger">
+							You are not logged in!
+						</div>
+					</div>
+					</div>';
+		echo $greenthing;
+}
 function post_answers()
 {
 	include 'reactjs.php';
@@ -28,7 +42,9 @@ function post_answers()
 	$sql = "select * 
 		from answers, post_answers
 		where post_answers.aid = answers.aid
-		and post_answers.uid = $uid";
+		and post_answers.uid = $uid
+		order by timeposted desc
+		";
 		
 	$stmt = mysqli_query($conn, $sql);
 	$num = mysqli_num_rows($stmt);
@@ -82,6 +98,7 @@ function post_questions()
 				from questions, post_question
 				where post_question.uid = $uid
 				and post_question.qid = questions.qid
+				order by timeposted desc
 				";
 		
 		$stmt = mysqli_query($conn, $sql);
@@ -119,10 +136,6 @@ function post_questions()
 						</div>';
 			echo $greenthing;
 		}
-	}
-	else
-	{
-		echo "ERROR:  YOU ARE NOT LOGGED IN";
 	}
 }
 

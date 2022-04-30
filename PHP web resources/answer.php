@@ -47,7 +47,8 @@
 				from answers, post_answers, users
 				where post_answers.qid = $qid
 				and answers.aid = post_answers.aid
-				and users.uid = post_answers.uid";
+				and users.uid = post_answers.uid
+				order by timeposted desc";
 		print_sql($conn, $sql, $qid);
 		
 	}
