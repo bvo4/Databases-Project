@@ -27,7 +27,8 @@
 <?php
 	include 'db_connection_project.php';
 	$conn = OpenCon();
-		
+	
+	
 	if(isset($_POST['like']) && isset($_POST['qid']))
 	{
 		$qid = $_POST['qid'];
@@ -37,6 +38,10 @@
 		mysqli_query($conn, $sql);
 	}
 	
+	if(isset($_POST['best']))
+	{
+		select_best();
+	}
 	if(isset($_POST['qid']))
 	{
 		$qid = $_POST['qid'];
@@ -59,10 +64,8 @@
 			echo $greenthing;	
 	}
 	
-	
 	function print_sql($conn, $sql, $qid)
 	{
-
 		$like_stmt = null;
 		
 		if(isset($_SESSION['uid']))
@@ -106,7 +109,8 @@
 				  <th> Date:  </th>";
 			if(isset($_SESSION['uid']))
 			{
-				echo"<th>Leave a like?</th>";
+				echo "<th>Leave a Like?</th>";
+				echo "<th>Select as best answer?</th>";
 			}
 				 echo "</tr>";
 			while($row = mysqli_fetch_array($stmt))
@@ -120,29 +124,43 @@
 						. "<th>" . $row['username'] ."</th> " . "</th>"
 						. "<th>" . $row['grade'] . "</th>"
 						. "<th>" . $row['timeposted'] . "</th>";
-						
 					if(isset($like_stmt) && $like_match)
 					{
-						$test .="<th>	<button type='submit' name='like' value=$row[aid] class='btn btn-secondary'>
+						$test .="<th><button type='submit' name='like' value=$row[aid] class='btn btn-secondary'>
 									You have already liked this
 								</button></th>";
 					}
 					else
 					{
-						$test .="<form method='post' action='answer.php?qid=$qid'>"
+						$test .="<form method='post' action='answer.php'>"
 						. "<input type='hidden' name='qid' value=$qid>";
-								if(isset($_SESSION['uid']))
-								{
-									$test .= "<th><button type='submit' name='like' value=$row[aid] class='btn btn-danger'>
-										Like
-									</button></th>";
-								}
-						$test .= "</form>";
+						if(isset($_SESSION['uid']))
+						{
+							$test .= "<th><button type='submit' name='like' value=$row[aid] class='btn btn-danger'>
+								Like
+							</button></th>";
+						}
 					}
-						$test .="</tr>"
-						;
-						$test = str_replace(PHP_EOL, '<br />', $test);
-						echo $test;
+					$test .= "</form>";
+					
+					if($row['best'] == False)
+					{
+					$test .= "<form method='post' action='answer.php?qid=$qid'>
+							<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>Select</button>
+							</th> "
+						. "<input type='hidden' name='qid' value=$qid>
+								</form>";
+					}
+					else
+					{
+					$test .= "
+							<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>Best Answer</button>
+							</th> ";
+					}
+					$test .="</tr>";
+					
+					$test = str_replace(PHP_EOL, '<br />', $test);
+					echo $test;
 			}
 				echo "</table>";
 	}
@@ -162,6 +180,21 @@
 			}
 		}
 		return $like_match;
+	}
+	
+	function select_best()
+	{
+		$conn = OpenCon();
+		$aid = $_POST['best'];
+		$uid = $_SESSION['uid'];
+		
+		$qid = $_POST['qid'];
+		$sql = "UPDATE post_answers
+				SET best=True, grade = grade + 5, weight = weight + 5
+				WHERE qid = $qid
+				and aid = $aid";
+		
+		$stmt = mysqli_query($conn, $sql);
 	}
 	
 ?>
