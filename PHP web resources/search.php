@@ -88,7 +88,7 @@ function topic_search($topic, $subtopic)
 {
 	if(isset($topic))
 	{
-		$search_topic = ' and topic.tname in ("' . array_shift($topic) . '"';
+		$search_topic = ' and (topic.tname in ("' . array_shift($topic) . '"';
 		$tid = $topic;
 		
 		for($b = 0; $b < sizeof($topic, 0); $b++)
@@ -106,7 +106,7 @@ function topic_search($topic, $subtopic)
 		{	
 			$search_subtopic.= ", '$subtopic[$b]'";
 		}
-		$search_subtopic.= ')';
+		$search_subtopic.= '))';
 	}
 
 	$sql = "$search_topic
@@ -118,7 +118,7 @@ function topic_search($topic, $subtopic)
 function title_search()
 {
 	$sid = explode(' ', $_POST['search']);
-	$searchwords = " and (title like '%" . array_shift($sid) . "%'";
+	$searchwords = " (title like '%" . array_shift($sid) . "%'";
 	
 	for($b = 0; $b < sizeof($sid, 0); $b++)
 	{
@@ -157,17 +157,19 @@ function search_question($title_keyword, $topic, $keyword)
 {
 	$conn = OpenCon();
 	$sql = "select *
-			from questions, post_question, users, subtopic, topic
-			where questions.qid = post_question.qid
-			and post_question.uid = users.uid 
-			and subtopic.stid = questions.stid
-			and subtopic.tid = topic.tid
+            from questions join post_question using (qid)
+                join users using (uid)
+                join subtopic using (stid)
+                join topic using (tid)
+            where
 			$title_keyword
 			$keyword
 			$topic
 			order by timeposted desc
 			";
-	
+    
+	echo $sql;
+    
 	$stmt = mysqli_query($conn, $sql);
 	$num = mysqli_num_rows($stmt);
 	
