@@ -17,6 +17,7 @@
 
 	<?php
 	
+	/* If the user is logged in, present the optin to submit a question */
 	if(isset($_SESSION['uid']))
 	{
 		echo "<th> <form method='post' action='submit_question.php'>
@@ -44,8 +45,10 @@
 	$stmt = mysqli_query($conn, $sql);
 	$num = mysqli_num_rows($stmt);
 	
+	//Check if we found a row, otherwise, output a generic error message.
 	if($num > 0)
 	{
+		/* Builds the header table for the questions */
 		echo "<br/>
 			  <table style = 'width:100%' class='table table-dark table-hover'>
 			  <tr>
@@ -56,9 +59,10 @@
 			  <th> View Answers:  </th>
 			  </tr>
 			";
+		/* Outputs each row found into the table */
 		while($row = mysqli_fetch_array($stmt))
 		{
-		
+		/* Outputs the table of all questions */
 		$test =
 				"<tr>"
 				. "<th>" . $row['username'] ."</th> "
@@ -75,6 +79,7 @@
 		}
 		echo "</table>";
 	}
+	/* Generic error message */
 	else
 	{
 		$greenthing = '<div class="row">

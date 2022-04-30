@@ -7,7 +7,6 @@
 
 <?php
 	include 'header.php';
-
 	$header = returnHeader();
 	echo $header;
 	
@@ -33,10 +32,10 @@
 	
 	<?php
 	include 'reactjs.php';
-	
 	include 'db_connection_project.php';
 	$conn = OpenCon();
-
+	
+	/* Chooses the 5 most recently posted questions */
 	$sql = "select *
 			from questions, post_question, users
 			where questions.qid = post_question.qid
@@ -46,6 +45,7 @@
 			";
 	$stmt = mysqli_query($conn, $sql);
 	
+	/* Builds the header table for the questions */
 	echo "<br/>
 		  <table style = 'width:100%' class='table table-dark table-hover'>
 		  <tr>
@@ -56,6 +56,7 @@
 		  <th> View Answers:  </th>
 		  </tr>
 		";
+		/* Outputs the questions contents */
 	while($row = mysqli_fetch_array($stmt))
 	{
 	
@@ -78,25 +79,3 @@
 
   </body>
 </html>
-
-<?php
-function login()
-{
-   echo "This will be the login";
-}
-
-function search()
-{
-   echo "This will be the search";
-}
-
-if(array_key_exists('Questions',$_POST)){
-   question();
-}
-if(array_key_exists('search',$_POST)){
-   search();
-}
-if(array_key_exists('login',$_POST)){
-   login();
-}
-?>

@@ -18,6 +18,7 @@ echo $header;
 <?php
 include 'db_connection_project.php';
 
+//Just in case
 if(isset($_SESSION['uid']))
 {	
 	post_questions();
@@ -34,11 +35,15 @@ else
 					</div>';
 		echo $greenthing;
 }
+
+/* Shows all answers made by this user */
 function post_answers()
 {
 	include 'reactjs.php';
 	$conn = OpenCon();
 	$uid = $_SESSION['uid'];
+	
+	//Obtains the contents of the answer
 	$sql = "select * 
 		from answers, post_answers
 		where post_answers.aid = answers.aid
@@ -61,6 +66,7 @@ function post_answers()
 			and post_answers.qid = $qid";
 			$question = grab_first_row($conn, $sql_question);
 			
+			//Outputs the contents of the answer and its corresponding question
 			$test =
 				"<tr>"
 				. "<th>" . $question['title'] ."</th>". "</th>"
@@ -88,6 +94,7 @@ function post_answers()
 	}
 }
 
+/* Shows all questions made by this user */
 function post_questions()
 {
 	if(isset($_SESSION['uid']))
@@ -104,6 +111,7 @@ function post_questions()
 		$stmt = mysqli_query($conn, $sql);
 		$num = mysqli_num_rows($stmt);
 		
+		//If we found any questions made by this user
 		if($num > 0)
 		{
 			echo "The questions you have posted";
@@ -125,6 +133,7 @@ function post_questions()
 			}
 			echo "</table>";
 		}
+		//Generic error message
 		else
 		{
 		  $greenthing = '<div class="row">
@@ -139,6 +148,7 @@ function post_questions()
 	}
 }
 
+/* Outputs question table header */
 function echo_table()
 {
 	echo "<br/>
@@ -152,6 +162,7 @@ function echo_table()
 		";
 }
 
+/* Outputs answer table header */
 function echo_table_answers()
 {
 	echo "<br/>

@@ -20,12 +20,9 @@
 ?>
  
     <title>Profile Page</title>
- 
-    <!-- Bootstrap CSS will be here -->
 </head>
 <body>
-  
-<!-- navigation bar will be here -->
+
 <div class="container mt-5">
     <div class="row">
     <div class="col-sm">
@@ -33,6 +30,7 @@
     </div>
 </div>
 <?php
+	/* Outputs a bunch of details regarding profile information */
 	if(isset($_SESSION['uid']))
 	{
 		include 'reactjs.php';
@@ -144,6 +142,8 @@ function update()
 {
 	$conn = OpenCon();
 	$sql = "select * from users where uid = $_SESSION[uid]";
+	
+	/* Finds the user in the users table and creates an SQL update query to change the user's details */
 	$row = grab_first_row($conn, $sql);
 	$sql_edit = write_update($row);
 	

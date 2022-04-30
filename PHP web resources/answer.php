@@ -10,6 +10,7 @@
 	$header = returnHeader();
 	echo $header;
 	
+	//If the user is logged in and is looking at a question, present the option to answer the question
 	if(isset($_SESSION['uid']) && isset($_POST['qid']))
 	{
 		echo "<th><form method='post' action='submit_answer.php'>
@@ -27,6 +28,8 @@
 	include 'db_connection_project.php';
 	$conn = OpenCon();
 	
+	
+	/* If a user wanted to like an answer or set an answer as best answer */
 	if(isset($_POST['like']) && isset($_POST['qid']))
 	{
 		$qid = $_POST['qid'];
@@ -39,7 +42,7 @@
 	{
 		select_best();
 	}
-	
+	//Bring the list of answers for that question
 	if(isset($_POST['qid']))
 	{
 		$qid = $_POST['qid'];
@@ -52,6 +55,22 @@
 		print_sql($conn, $sql, $qid);
 		
 	}
+	//If the user just came back after posting an answer.  Bring back the list of answers from that question and destroy the temp variable.
+	//Then, bring the list of answers for that question
+	else if(isset($_SESSION['post_qid']))
+	{
+		$post_qid = $_SESSION['post_qid'];
+		unset ($_SESSION['post_qid']);
+		
+		$sql = "select * 
+				from answers, post_answers, users
+				where post_answers.qid = $post_qid
+				and answers.aid = post_answers.aid
+				and users.uid = post_answers.uid
+				order by timeposted desc";
+		print_sql($conn, $sql, $post_qid);
+	}
+	/* Blank questions error message */
 	else
 	{
 		$greenthing = '<div class="row">
@@ -70,6 +89,7 @@
 		
 		if(isset($_SESSION['uid']))
 		{
+			/* Grab the list of likes made by that user */
 			$uid = $_SESSION['uid'];
 			$sql_like_check = "select * from users, likes
 								where likes.uid = users.uid
@@ -80,6 +100,7 @@
 		
 		$stmt = mysqli_query($conn, $sql);
 		$num = mysqli_num_rows($stmt);
+		
 		if($num > 0)
 		{
 			print_answer($stmt, $like_stmt, $qid);
@@ -105,6 +126,7 @@
 		$user_question_id = grab_first_row($conn, $sql);
 		$user_question_id = $user_question_id['uid'];
 		
+		//Print answer table header
 		echo "
 			<table class = 'table table-dark table-hover' style = 'width:100%'>
 			<tr>
@@ -116,6 +138,7 @@
 			<th>Leave a Like?</th>
 			<th>Select as best answer?</th></tr>";
 			
+			//Print answer contents
 			while($row = mysqli_fetch_array($stmt))
 			{
 				$like_match = check_likes($like_stmt, $row['aid']);
@@ -127,15 +150,18 @@
 						. "<th>" . $row['username'] ."</th> " . "</th>"
 						. "<th>" . $row['grade'] . "</th>"
 						. "<th>" . $row['timeposted'] . "</th>";
-						
+				
+				/* Check if the user made this answer */
 				if(isset($_SESSION['uid']) && $_SESSION['uid'] != $user_question_id)
 				{
+					/* Check if the user has already liked this answer */
 					if(isset($like_stmt) && $like_match)
 					{
 						$test .="<th><button type='submit' name='like' value=$row[aid] class='btn btn-secondary'>
 									You have already liked this
 								</button></th>";
 					}
+					/* Otherwise, show an option to like the answer */
 					else
 					{
 						$test .="<form method='post' action='answer.php'>"
@@ -149,12 +175,14 @@
 					}
 				}
 					$test .= "</form>";
+					/* Inform the user that this is the user's answer */
 					if(isset($_SESSION['uid']) && $_SESSION['uid'] == $user_question_id)
 					{
 						$test .= "
 								<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>This is your answer!</button>
 								</th> ";
 					}
+					/* Check if the question is selected as best answer.  Otherwise, give the user an option to select this answer as best answer */
 					else if($row['best'] == False)
 					{
 					$test .= "<form method='post' action='answer.php?qid=$qid'>
@@ -163,6 +191,7 @@
 						. "<input type='hidden' name='qid' value=$qid>
 								</form>";
 						}
+					/* If this is already selected as best answer, inform the user */
 					else
 					{
 					$test .= "
@@ -176,6 +205,7 @@
 				echo "</table>";
 	}
 	
+	/* Function to check for the list of likes made by that user */
 	function check_likes($like_stmt, $question_aid)
 	{
 		$like_match = False;
@@ -193,6 +223,7 @@
 		return $like_match;
 	}
 	
+	/* Sends an update query to select an answser as best answer */
 	function select_best()
 	{
 		$conn = OpenCon();

@@ -90,6 +90,7 @@ padding: 10px;
 	grab_subtopics();
 	search_options();
 	
+//Present the list of topics choose from based off what was found from the topics table
 function grab_topics()
 {
 	$conn = OpenCon();
@@ -111,6 +112,7 @@ function grab_topics()
 					</div>
 			</div>
 		   </div>';
+	/* Presents the list of topics */
 	echo '<div class="center btn-toolbar demo parent">';
 	while($row = mysqli_fetch_array($stmt))
 	{
@@ -136,7 +138,7 @@ function grab_topics()
 	}
 	echo "</div>";
 }
-
+/* Presents the list of subtopics based off what was found in the subtopics table*/
 function grab_subtopics()
 {
 	$conn = OpenCon();
@@ -147,7 +149,7 @@ function grab_subtopics()
 	$b = 0;
 
 	echo '<div class="center demo btn-toolbar parent">';
-
+	/* Presents the list of subtopics */
 	while($row = mysqli_fetch_array($stmt))
 	{
 	$test =
@@ -173,6 +175,7 @@ function grab_subtopics()
 	echo "</div>";
 }
 
+/* Provides an optoin to search for answers, questions, or both */
 function search_options()
 {
 	echo '<div class="center demo btn-toolbar parent">';

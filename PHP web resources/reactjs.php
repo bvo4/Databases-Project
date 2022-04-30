@@ -1,16 +1,19 @@
 <?php
+//Obtains the contents of the first row from an sql query
 function grab_first_row($conn, $sql) {
 	$stmt = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($stmt);
 	return $row;
 }
 
+//Redircts to provided web page
 function redirect($page)
 {
     echo "<script> location.href='" . $page   . "'" . "; </script>";
     exit;
 }
 
+//Used in profile.php.  Updates user info based off what was changed or what wasn't.
 function write_update($row)
 {
 	$sql_edit = "SET ";
@@ -66,10 +69,12 @@ function write_update($row)
 		$previous_change = True;
 	}
 	
+	//Returns sql query for the update.
 	if($previous_change)
 	{
 		return $sql_edit;
 	}
+	//If no changes found, output -1
 	else
 	{
 		return '-1';

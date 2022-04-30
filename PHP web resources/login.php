@@ -60,8 +60,6 @@
 </form>
 
 </div>
-  
-<!-- Bootstrap JavaScript will be here -->
 
 <?php
 
@@ -78,6 +76,7 @@ else if (isset($_GET['logout'])) {
   logout();
 }
 
+/* Informs if the user is logged in or not */
 function alert_status()
 {
 	if(isset($_SESSION['user']))
@@ -101,6 +100,7 @@ function alert_status()
 	return $greenthing;
 }
 
+//Logs the user in
 function login()
 {
 	include 'db_connection_project.php';
@@ -109,7 +109,7 @@ function login()
 	$name = $_POST['username']; //note i used $_POST since you have a post form **method='post'**
 	$password = $_POST['password'];
 
-	
+	//Check if the username and password match the MySQL query
 	$sql = "select uid, username, `password`
 			from users
 			where username = '$name'
@@ -126,6 +126,7 @@ function login()
 		echo "<script> location.href='homepage.php'; </script>";
 		exit;
 		
+		//Login failed
 	} else {
         echo'<div class="row">
                   <div class="col-sm">
@@ -137,6 +138,7 @@ function login()
 	}
 }
 
+//Logs out the user by destroying the session uid
 function logout() {
 
   echo "LOGGING OUT";

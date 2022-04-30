@@ -22,8 +22,48 @@ echo $header;
 	
 	if(isset($_POST['topic']))
 	{
+		$topic = topic_keyword();
+	}
+
+	if (isset($_POST['search']))
+	{
+		$keyword = question_keyword_search();
+		$title_keyword = title_search();
+	}
+	/* If the user opted to search for questions */
+	if(isset($_POST['Check_Question']))
+	{
+		echo "Search based on Questions: <br/>";
+		search_question($title_keyword, $topic, $keyword);
+	}
+	/* If the user opted to search for answers */
+	if(isset($_POST['Check_Answer']))
+	{
+		$keyword = answer_keyword_search();
+		echo "Search based off Answers: <br/>";
+		search_answers($topic, $keyword);
+	}
+	/* If the user didn't opt to search for anything */
+	if(!(isset($_POST['Check_Answer'])) && !(isset($_POST['Check_Question'])))
+	{
+	  $greenthing = '<div class="row">
+					<div class="col-sm">
+						<div class="alert alert-danger">
+							You didn\'t ask to search for anything!
+							Please specify if you want to search for answers or questions!
+						</div>
+					</div>
+					</div>';
+		echo $greenthing;
+	}
+
+	/* This takes the list of topics and subtopics taken from the browse page
+	and identifies which keyword belongs to a topic and which belongs to a subtopic and creates seperate arrays.
+	Afterwards, creates a query to search for topics and subtopics based off which one found*/
+	function topic_keyword()
+	{
 		$subtopic = '';
-		
+		$topic = '';
 		for($b = 0; $b < sizeof($_POST['topic'], 0); $b++)
 		{
 			$temp = substr($_POST['topic'][$b], 0, 4);
@@ -41,49 +81,11 @@ echo $header;
 		
 		$topic = explode(',', $topic);
 		$subtopic = explode (',', $subtopic);
-
-		print_r ($topic);
-		echo "<br/>";
-		
-		print_r ($subtopic);
-		echo "<br/>";
-		
 		$topic = topic_search($topic, $subtopic);
+		return $topic;
 	}
 
-	if (isset($_POST['search']))
-	{
-		$keyword = question_keyword_search();
-		$title_keyword = title_search();
-	}
-	
-	if(isset($_POST['Check_Question']))
-	{
-		echo "Search based on Questions: <br/>";
-		search_question($title_keyword, $topic, $keyword);
-	}
-	
-	if(isset($_POST['Check_Answer']))
-	{
-		$keyword = answer_keyword_search();
-		echo "Search based off Answers: <br/>";
-		search_answers($topic, $keyword);
-	}
-	if(!(isset($_POST['Check_Answer'])) && !(isset($_POST['Check_Question'])))
-	{
-	  $greenthing = '<div class="row">
-					<div class="col-sm">
-						<div class="alert alert-danger">
-							You didn\'t ask to search for anything!
-							Please specify if you want to search for answers or questions!
-						</div>
-					</div>
-					</div>';
-		echo $greenthing;
-	}
-
-
-
+/* Creates a query to create keywords based off the topics and subtopics and search for any questions that have a matching topic and/or subtopic */
 function topic_search($topic, $subtopic)
 {
 	if(isset($topic))
@@ -115,6 +117,7 @@ function topic_search($topic, $subtopic)
 
 }
 
+/* Creates a query to search for any matching questions title */
 function title_search()
 {
 	$sid = explode(' ', $_POST['search']);
@@ -128,18 +131,7 @@ function title_search()
 	return $searchwords;
 }
 
-function answer_keyword_search()
-{
-	$sid = explode(' ', $_POST['search']);
-	$searchwords = " and body like '%" . array_shift($sid) . "%'";
-	
-	for($b = 0; $b < sizeof($sid, 0); $b++)
-	{
-		$searchwords.= " and body like '%$sid[$b]%'";
-	}
-	return $searchwords;
-}
-
+/* Creates part of the query needed to search through the questions table */
 function question_keyword_search()
 {
 	$sid = explode(' ', $_POST['search']);
@@ -153,6 +145,20 @@ function question_keyword_search()
 	return $searchwords;
 }
 
+/* Same as the function above.  I just didn't feel like making seperate distinctiosn for questions and answers and just made a dupe function */
+function answer_keyword_search()
+{
+	$sid = explode(' ', $_POST['search']);
+	$searchwords = " and body like '%" . array_shift($sid) . "%'";
+	
+	for($b = 0; $b < sizeof($sid, 0); $b++)
+	{
+		$searchwords.= " and body like '%$sid[$b]%'";
+	}
+	return $searchwords;
+}
+
+/* This function serves to search for all questions that have the matching topic and subtopic and matching keywords*/
 function search_question($title_keyword, $topic, $keyword)
 {
 	$conn = OpenCon();
@@ -222,6 +228,7 @@ function echo_table()
 		";
 }
 
+/* This function serves to search for all answers that have the matching topic and subtopic and matching keywords*/
 function search_answers($topic, $keyword)
 {
 	$keyword = str_replace('body', 'answers.body', $keyword);

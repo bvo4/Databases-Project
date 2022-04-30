@@ -63,6 +63,7 @@
 
 <?php
 
+/* Acquires question based off the answer */
 function get_question()
 {
 	include 'db_connection_project.php';
@@ -77,6 +78,7 @@ function get_question()
 	return mysqli_fetch_array($stmt);
 }
 
+//Just in case the user somehow accesses this page when not signed in.
 if(isset($_POST['aid']))
 {
 	if(!isset($_POST['uid']))
@@ -94,6 +96,7 @@ if(isset($_POST['body']))
 	include 'reactjs.php';
 	$conn = OpenCon();
 	
+	/* Get the next free aid value.  While answers has auto_increment, we still need the aid for post_answers */
 	$sql = "select aid
 			from answers
 			order by aid desc
@@ -102,16 +105,20 @@ if(isset($_POST['body']))
 	$aid = $aid['aid'] + 1;
 	$date = date('Y-m-d H:i:s');
 	
-	
-	
+	/* Insert into answers table */
 	$sql = "INSERT INTO answers(aid, body)
 			VALUES ($aid, '$_POST[body]')";
 	mysqli_query($conn, $sql);
 	
+	/* Insert into post_answers table */
 	$sql = "INSERT INTO post_answers(uid, qid, aid, grade, weight, best, timeposted)
 			VALUES ($_SESSION[uid], $qid[qid], $aid, 1, 1, False, '$date')";
 	mysqli_query($conn, $sql);
-	echo "Answer submitted";
+	
+	/* Redirects the user to the answer page for that particular question by storing it in a temporary session variable
+	Will delete the temporary session variable once the answer.php page is reached*/
+	$_SESSION['post_qid'] = $qid['qid'];
+	redirect('answer.php');
 }
 
 ?>
