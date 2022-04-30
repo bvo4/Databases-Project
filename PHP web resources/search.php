@@ -40,11 +40,10 @@ echo $header;
 		
 		$topic = explode(',', $topic);
 		$subtopic = explode (',', $subtopic);
-		echo "TOPIC: ";
+
 		print_r ($topic);
 		echo "<br/>";
 		
-		echo "SUBTOPIC: ";
 		print_r ($subtopic);
 		echo "<br/>";
 		
@@ -53,11 +52,16 @@ echo $header;
 
 	if (isset($_POST['search']))
 	{
-		$keyword = keyword_search();
+		$keyword = question_keyword_search();
+		$title_keyword = title_search();
 	}
 	
-	search($topic, $keyword);
-
+	echo "Search based on Questions: <br/>";
+	search_question($title_keyword, $topic, $keyword);
+	$keyword = answer_keyword_search();
+	
+	echo "Search based off Answers: <br/>";
+	search_answers($topic, $keyword);
 
 function topic_search($topic, $subtopic)
 {
@@ -90,7 +94,20 @@ function topic_search($topic, $subtopic)
 
 }
 
-function keyword_search()
+function title_search()
+{
+	$sid = explode(' ', $_POST['search']);
+	$searchwords = " and (title like '%" . array_shift($sid) . "%'";
+	
+	for($b = 0; $b < sizeof($sid, 0); $b++)
+	{
+		$searchwords.= " and title like '%$sid[$b]%'";
+	}
+	
+	return $searchwords;
+}
+
+function answer_keyword_search()
 {
 	$sid = explode(' ', $_POST['search']);
 	$searchwords = " and body like '%" . array_shift($sid) . "%'";
@@ -99,11 +116,23 @@ function keyword_search()
 	{
 		$searchwords.= " and body like '%$sid[$b]%'";
 	}
-
 	return $searchwords;
 }
 
-function search($topic, $keyword)
+function question_keyword_search()
+{
+	$sid = explode(' ', $_POST['search']);
+	$searchwords = " or body like '%" . array_shift($sid) . "%'";
+	
+	for($b = 0; $b < sizeof($sid, 0); $b++)
+	{
+		$searchwords.= " and body like '%$sid[$b]%'";
+	}
+	$searchwords .=")";
+	return $searchwords;
+}
+
+function search_question($title_keyword, $topic, $keyword)
 {
 	include 'db_connection_project.php';
 	$conn = OpenCon();
@@ -113,10 +142,10 @@ function search($topic, $keyword)
 			and post_question.uid = users.uid 
 			and subtopic.stid = questions.stid
 			and subtopic.tid = topic.tid
+			$title_keyword
 			$keyword
 			$topic
 			";
-	echo 'SQL: ' . $sql;
 	
 	$stmt = mysqli_query($conn, $sql);
 	
@@ -136,7 +165,6 @@ function search($topic, $keyword)
 			  </th>"
 			."</tr>"
 			;
-			$test = str_replace(PHP_EOL, '<br />', $test);
 			echo $test;
 	}
 	echo "</table>";
@@ -155,6 +183,55 @@ function echo_table()
 		  <th> View Answers:  </th>
 		  </tr>
 		";
+}
+
+function search_answers($topic, $keyword)
+{
+	$keyword = str_replace('body', 'answers.body', $keyword);
+
+	$conn = OpenCon();
+	$sql = "select username, questions.qid, questions.title as title, questions.body as body, answers.body as answer, post_answers.timeposted as timeposted
+			from answers, post_answers, post_question, questions, users, subtopic, topic
+			where questions.qid = post_question.qid
+			and post_question.uid = users.uid 
+			and post_question.qid = post_answers.aid
+			and post_answers.aid = answers.aid
+			and subtopic.stid = questions.stid
+			and subtopic.tid = topic.tid
+			$keyword
+			$topic
+			order by post_answers.timeposted, grade desc
+			";
+
+	echo "answer: " . $sql;
+
+	$stmt = mysqli_query($conn, $sql);
+	
+	echo "<br/>
+		  <table style = 'width:100%' class='table table-dark table-hover'>
+		  <tr>
+		  <th> Username:  </th>
+		  <th> Question Title:  </th>
+		  <th> Question Body:  </th>
+		  <th> Answer:  </th>
+		  <th> Date posted:  </th>
+		  </tr>
+		";
+	
+	while($row = mysqli_fetch_array($stmt))
+	{
+	$test =
+		"<tr>"
+		. "<th>" . $row['username'] ."</th> "
+		. "<th>" . $row['title'] ."</th> "
+		. "<th>" . $row['body'] ."</th>". "</th>"
+		. "<th>" . $row['answer'] ."</th> " . "</th>"
+		. "<th>" . $row['timeposted'] . "</th>"
+		."</tr>"
+		;
+		echo $test;
+	}
+	
 }
 
 ?>
