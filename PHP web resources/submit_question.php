@@ -84,8 +84,7 @@ function submit_question()
 			from questions
 			order by qid desc
 			limit 1";
-	$stmt = mysqli_query($conn, $sql);
-	$qid = mysqli_fetch_array($stmt);
+	$qid = grab_first_row($conn, $sql);
 	
 	$qid = $qid['qid'] + 1;
 	$date = date('Y-m-d H:i:s');
@@ -103,13 +102,15 @@ function submit_question()
 
 if(isset($_POST['title']) && isset($_POST['body']))
 {
-	if(!isset($_POST['uid']))
+	if(!isset($_SESSION['uid']))
 	{
 		echo "ERROR:  You should not be able to see this web page";
 	}
 	else
 	{
+		include 'reactjs.php';
 		submit_question();
+		redirect('question.php');
 	}
 }
 

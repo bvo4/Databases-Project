@@ -5,6 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<style>
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+</style>
+
 <?php
 	include 'header.php';
 	$header = returnHeader();
@@ -21,29 +29,29 @@
 <div class="container mt-5">
     <div class="row">
     <div class="col-sm">
-        <h1>Login Page</h1>
+        <h1>Profile Page</h1>
     </div>
 </div>
 <?php
-
 	if(isset($_SESSION['uid']))
 	{
-
+		include 'reactjs.php';
 		include 'db_connection_project.php';
 		$conn = OpenCon();
 		
 		$sql = "select *
 				from users
 				where uid = $_SESSION[uid]
+				limit 1
 				";
-		$stmt = mysqli_query($conn, $sql);	
-		$row = mysqli_fetch_array($stmt);
+
+		$row = grab_first_row($conn, $sql);
 
 		$form = "<form action='#' method='post'>
 			<table class='table table-hover'>
 				<tr>
 					<td>Username</td>
-					<td>$row[uid]</td>
+					<td><input type='text' name='username' value='$row[username]' class='form-control' required></td>
 				</tr>
 		  
 				<tr>
@@ -54,12 +62,16 @@
 		 
 				 <tr>
 					<td>Profile</td>
-					<td><input type='text' name='profile' style='height:150px;' value='$row[profile]' class='form-control' required></td>
+					<td>
+					<textarea name='profile' style='height:150px;' class='form-control' required>$row[profile]</textarea>
+					</td>
 				</tr>
 
 				<tr>
 					<td>Status</td>
-					<td><input type='text' name='status' value='$row[status]' class='form-control' required></td>
+					<td>
+						$row[status]
+					</td>
 				</tr>
 
 				<tr>
@@ -98,8 +110,6 @@
 ?>
 
 </div>
-  
-<!-- Bootstrap JavaScript will be here -->
 
 <?php
 
@@ -132,14 +142,34 @@ function alert_status()
 
 function update()
 {
-	echo "UPDATE";
 	$conn = OpenCon();
-	$sql = "UPDATE users
-			SET 
-			where uid = $_SESSION[uid]
-			";
-	$stmt = mysqli_query($conn, $sql);	
-	$row = mysqli_fetch_array($stmt);
+	$sql = "select * from users where uid = $_SESSION[uid]";
+	$row = grab_first_row($conn, $sql);
+	$sql_edit = write_update($row);
+	
+	if($sql_edit == '-1')
+	{
+		echo "ERROR:  NO CHANGE DETECTED";
+	}
+	else
+	{
+		$sql = "UPDATE users
+				$sql_edit
+				where uid = $_SESSION[uid]
+				";
+		echo "UPDATE: " . $sql;
+		$stmt = mysqli_query($conn, $sql);
+		if(!$stmt)
+		{
+			echo mysqli_error($conn);
+			die();
+		}
+		else
+		{
+			echo "SUCCESS";
+			redirect('profile.php');
+		}
+	}
 }
 
 if(isset($_POST['save']))

@@ -97,8 +97,7 @@ if(isset($_POST['body']))
 			from answers
 			order by aid desc
 			limit 1";
-	$stmt = mysqli_query($conn, $sql);
-	$aid = mysqli_fetch_array($stmt);
+	$aid = grab_first_row($conn, $sql);
 	$aid = $aid['aid'] + 1;
 	$date = date('Y-m-d H:i:s');
 	

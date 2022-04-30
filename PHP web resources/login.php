@@ -106,6 +106,7 @@ function login()
 	
 	$name = $_POST['username']; //note i used $_POST since you have a post form **method='post'**
 	$password = $_POST['password'];
+
 	
 	$sql = "select uid, username, `password`
 			from users
@@ -120,10 +121,8 @@ function login()
 		$_SESSION['user'] = $name;
 		$_SESSION['uid'] = $row['uid'];
 		
-		echo "LOGIN SUCCESSFUL:  REFRESHING IN ONE MOMENT";
-	    $page = $_SERVER['PHP_SELF'];
-	    $sec = "1";
-	    header("Refresh: $sec; url=$page");
+		echo "<script> location.href='homepage.php'; </script>";
+		exit;
 		
 	} else {
 		echo "LOGIN FAILED.  PASSWORD OR USERNAME DOES NOT MATCH";
@@ -137,16 +136,47 @@ function logout() {
   //Apparently need to start the session again to destroy it
   session_unset();
   session_destroy();
-  $page = $_SERVER['PHP_SELF'];
-  $sec = "1";
-  header("Refresh: $sec; url=$page");
+  
+  echo "<script> location.href='homepage.php'; </script>";
+  exit;
 }
 
 function register()
 {
-	echo "REGISTER";
-}
+	include 'db_connection_project.php';
 
+	$conn = OpenCon();
+	$name = $_POST['username']; //note i used $_POST since you have a post form **method='post'**
+	$password = $_POST['password'];
+
+	$sql = "SELECT uid
+			FROM users
+			order by uid desc
+			limit 1";
+	$row = grab_first_row($conn, $sql);
+
+	$uid = $row['uid'] + 1;
+	
+	$sql = "INSERT INTO users(uid, username, password)
+			VALUES ($uid, '$name', '$password')";
+	
+	$stmt = mysqli_query($conn, $sql);
+	
+	if(!$stmt)
+	{
+		echo mysqli_error($conn);
+		die();
+	}
+	else
+	{
+		$_SESSION['uid'] = $uid;
+		$_SESSION['user'] = $name;
+		
+		include 'reactjs.php';
+		echo "You have registered to the site.  One moment";
+        redirect('profile.php');
+	}
+}
 ?>
 </body>
 </html>
