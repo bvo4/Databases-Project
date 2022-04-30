@@ -7,15 +7,30 @@
 
   
 <style>
- .header {
-  padding: 5px;
-  text-align: center;
-  background: #1abc9c;
-  color: white;
-  font-size: 15px;
+.search_box {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
 }
 .container {
   display: flex;
+}
+
+.parent {
+  width: 1200px;
+  background-color: #333;
+
+  margin: 20px 0; /* outer margin doesn't matter */
+}
+
+div.demo {
+    display:table;
+    width:50%;
+}
+div.demo span {
+    display:table-cell;
+    text-align:center;
 }
 .container.space-around {
   padding: 5px;
@@ -82,12 +97,23 @@ function grab_topics()
 	$stmt = mysqli_query($conn, $sql);
 	$b = 0;
 
-	echo "<form action = 'search.php' action='get'>";
-	echo '<div class="center btn-toolbar">';
+	echo "<form method = 'post' action = 'search.php'>";
+	echo '<div id="basic-primary-block" class="col-8 center">
+			<div class="input-group mb-1">
+				<div>
+					<button class="btn btn-outline-secondary" name="search" type="submit"><i aria-hidden="true"></i> Search
+					</button>
+				</div>
+					<input id="basic-search-input" name="search" autofocus="" type="text" class="form-control" placeholder="Input your keywords separated by a space" value="">
+					<div>
+					</div>
+			</div>
+		   </div>';
+	echo '<div class="center btn-toolbar demo parent">';
 	while($row = mysqli_fetch_array($stmt))
 	{
-	$test =
-			'<input src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" name="topic[]" type="checkbox" value="top_'
+	$test = '<span>'
+			.'<input src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" name="topic[]" type="checkbox" value="top_'
 			. $row['tname']
 			.'" id=tn'
 			. $b
@@ -99,6 +125,7 @@ function grab_topics()
 			.$row['tname']
 			.'</label>'
 			. '<br/> '
+			. '</span>'
 			;
 			$test = str_replace(PHP_EOL, '<br />', $test);
 			echo $test;
@@ -117,13 +144,13 @@ function grab_subtopics()
 	$stmt = mysqli_query($conn, $sql);
 	$b = 0;
 
-	echo "<form action = 'search.php' action='get'>";
-	echo '<div class="center btn-toolbar">';
+	echo '<div class="center demo btn-toolbar parent">';
 
 	while($row = mysqli_fetch_array($stmt))
 	{
 	$test =
-			'<input src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" name="topic[]" type="checkbox" value ="sub_'
+			'<span>'
+			.'<input src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" name="topic[]" type="checkbox" value ="sub_'
 			. $row['sname'] . '"'
 			.'id=sn'
 			. $b
@@ -133,7 +160,8 @@ function grab_subtopics()
 			. '">'
 			.$row['sname']
 			.'</label>'
-			. '<br/> '
+			. '<br/>'
+			. '</span>'
 			;
 			$test = str_replace(PHP_EOL, '<br />', $test);
 			echo $test;
@@ -141,11 +169,7 @@ function grab_subtopics()
 			echo "</select>";
 	}
 	
-	echo "</div>
-	<button type='submit' name='submit' class='btn btn-primary'>
-			Submit
-			</button>
-		</form>";
-	
+	echo "</div>";
+	echo "</form>";
 }
 ?>

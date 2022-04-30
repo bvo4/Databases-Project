@@ -16,23 +16,25 @@ echo $header;
 
 <body>
 <?php
-	if(isset($_GET['topic']))
+	$topic = '';
+	$keyword = '';
+	
+	if(isset($_POST['topic']))
 	{
-		$topic = ''; 
 		$subtopic = '';
 		
-		for($b = 0; $b < sizeof($_GET['topic'], 0); $b++)
+		for($b = 0; $b < sizeof($_POST['topic'], 0); $b++)
 		{
-			$temp = substr($_GET['topic'][$b], 0, 4);
+			$temp = substr($_POST['topic'][$b], 0, 4);
 			if($temp == "top_")
 			{
-				$temp = substr($_GET['topic'][$b], 4);
-				$topic .= "," . substr($_GET['topic'][$b], 4);
+				$temp = substr($_POST['topic'][$b], 4);
+				$topic .= "," . substr($_POST['topic'][$b], 4);
 			}
 			else if($temp == "sub_")
 			{
-				$temp = substr($_GET['topic'][$b], 4);
-				$subtopic .= ',' . substr($_GET['topic'][$b], 4);
+				$temp = substr($_POST['topic'][$b], 4);
+				$subtopic .= ',' . substr($_POST['topic'][$b], 4);
 			}
 		}
 		
@@ -46,13 +48,15 @@ echo $header;
 		print_r ($subtopic);
 		echo "<br/>";
 		
-		topic_search($topic, $subtopic);
+		$topic = topic_search($topic, $subtopic);
 	}
 
-	else if (isset($_POST['search']))
+	if (isset($_POST['search']))
 	{
-		keyword_search();
+		$keyword = keyword_search();
 	}
+	
+	search($topic, $keyword);
 
 
 function topic_search($topic, $subtopic)
@@ -68,7 +72,6 @@ function topic_search($topic, $subtopic)
 		}
 		$search_topic.= ')';
 	}
-	
 	if(isset($subtopic))
 	{
 		$search_subtopic = ' or subtopic.sname in ("' . array_shift($subtopic) . '"';
@@ -80,42 +83,11 @@ function topic_search($topic, $subtopic)
 		}
 		$search_subtopic.= ')';
 	}
-	include 'db_connection_project.php';
-	$conn = OpenCon();
-	
-	$sql = "select distinct *
-			from post_question, users, topic, questions, subtopic
-			where questions.qid = post_question.qid 
-			and questions.stid = subtopic.stid
-			and post_question.uid = users.uid 
-			and ($search_topic
-			$search_subtopic)
-			";
-	
-	echo "SQL: " . $sql;
-	
-	$stmt = mysqli_query($conn, $sql);
 
-	echo_table();
-		
-	while($row = mysqli_fetch_array($stmt))
-	{
-	$test =
-			"<tr>"
-			. "<th>" . $row['username'] ."</th> "
-			. "<th>" . $row['title'] ."</th>". "</th>"
-			. "<th>" . $row['body'] ."</th> " . "</th>"
-			. "<th>" . $row['timeposted'] . "</th>"
-			. "<th> <form method='post' action='answer.php'>
-						<button input type='link' name='answer' value=$row[qid]>View More</button>
-					</form>
-			  </th>"
-			."</tr>"
-			;
-			$test = str_replace(PHP_EOL, '<br />', $test);
-			echo $test;
-	}
-	echo "</table>";
+	$sql = "($search_topic
+			$search_subtopic)";
+	return $sql;
+
 }
 
 function keyword_search()
@@ -128,20 +100,25 @@ function keyword_search()
 		$searchwords.= " and body like '%$sid[$b]%'";
 	}
 
-	include 'db_connection_project.php';
-	$conn = OpenCon();
+	return $searchwords;
+}
+
+function search($topic, $keyword)
+{
 	
 	$sql = "select *
 			from questions, post_question, users
 			where questions.qid = post_question.qid
 			and post_question.uid = users.uid
-			$searchwords
+			$keyword
+			$topic
 			group by users.uid
 			";
+	echo 'SQL: ' . $sql;
+	/*
 	$stmt = mysqli_query($conn, $sql);
 	
 	echo_table();
-		
 	while($row = mysqli_fetch_array($stmt))
 	{
 	
@@ -159,8 +136,9 @@ function keyword_search()
 			;
 			$test = str_replace(PHP_EOL, '<br />', $test);
 			echo $test;
-			}
+	}
 	echo "</table>";
+	*/
 }
 
 function echo_table()
