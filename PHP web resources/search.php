@@ -83,7 +83,7 @@ function topic_search($topic, $subtopic)
 		
 		for($b = 0; $b < sizeof($subtopic, 0); $b++)
 		{	
-			$search_subtopic.= ", ' $subtopic[$b]'";
+			$search_subtopic.= ", '$subtopic[$b]'";
 		}
 		$search_subtopic.= ')';
 	}
