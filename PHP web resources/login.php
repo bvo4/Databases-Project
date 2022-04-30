@@ -39,7 +39,7 @@
   
         <tr>
             <td>Password</td>
-            <td><input type='text' name='password' class='form-control' required></td>
+            <td><input type='password' name='password' class='form-control' required></td>
         </tr>
   
         <tr>
