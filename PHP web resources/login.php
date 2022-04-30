@@ -29,8 +29,8 @@
 	$alert = alert_status();
 	echo $alert;
 ?>
+<table class='table table-hover'>
 <form action='#' method='post'>
-    <table class='table table-hover'>
 		<form action="POST" action = 'login.php'>
         <tr>
             <td>Username</td>
@@ -48,15 +48,17 @@
 					<button type="submit" name='login' class="btn btn-primary">
 						<span class="glyphicon glyphicon-plus"></span> Login
 					</button>
-					<button type="submit" name='register' color="secondary" class="btn btn-danger">
-						<span class="glyphicon glyphicon-plus"></span> Register
-					</button>
-				</form>
-            </td>
+                    <!--
+                    <button type="submit" name='register' color="secondary" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-plus"></span> Register
+                    </button> -->
+                    <a href = "register.php">Register</a>
+        </td>
         </tr>
-  
-    </table>
+        </table>
+        </form>
 </form>
+
 </div>
   
 <!-- Bootstrap JavaScript will be here -->
@@ -125,7 +127,13 @@ function login()
 		exit;
 		
 	} else {
-		echo "LOGIN FAILED.  PASSWORD OR USERNAME DOES NOT MATCH";
+        echo'<div class="row">
+                  <div class="col-sm">
+                    <div class="alert alert-danger">
+                      <center><strong>LOGIN FAILED.  PASSWORD OR USERNAME DOES NOT MATCH</strong></center>
+                    </div>
+                  </div>
+                  </div>';
 	}
 }
 
@@ -141,42 +149,6 @@ function logout() {
   exit;
 }
 
-function register()
-{
-	include 'db_connection_project.php';
-
-	$conn = OpenCon();
-	$name = $_POST['username']; //note i used $_POST since you have a post form **method='post'**
-	$password = $_POST['password'];
-
-	$sql = "SELECT uid
-			FROM users
-			order by uid desc
-			limit 1";
-	$row = grab_first_row($conn, $sql);
-
-	$uid = $row['uid'] + 1;
-	
-	$sql = "INSERT INTO users(uid, username, password)
-			VALUES ($uid, '$name', '$password')";
-	
-	$stmt = mysqli_query($conn, $sql);
-	
-	if(!$stmt)
-	{
-		echo mysqli_error($conn);
-		die();
-	}
-	else
-	{
-		$_SESSION['uid'] = $uid;
-		$_SESSION['user'] = $name;
-		
-		include 'reactjs.php';
-		echo "You have registered to the site.  One moment";
-        redirect('profile.php');
-	}
-}
 ?>
 </body>
 </html>
