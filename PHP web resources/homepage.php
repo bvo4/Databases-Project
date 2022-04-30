@@ -16,7 +16,21 @@
   <body>
 
     <h2 style="text-align: center">DATABASES PROJECT TITLE:  HEADER</h2>
-	
+
+    <h3 style="text-align: center">Questions and Answers for your Curiosity</h3>
+    
+    <?php
+    if(!isset($_SESSION['user'])){
+    echo "</br></br><h2 style='text-align: center'><a href = '/Databases-Project/PHP%20web%20resources/login.php'>Create an account or Login </a>to post your questions and answers!</h2>";
+    }
+    ?>
+ 
+    </br></br></br>
+    <h3 style="text-align: center"><a href= '/Databases-Project/PHP%20web%20resources/browse.php'>Browse </a>By Questions using Keywords and Topics</h3>
+ 
+    </br></br></br>
+    <h3 style="text-align: center">Current Top 5 Questions</h3>
+
 	<?php
 	include 'reactjs.php';
 	
