@@ -27,10 +27,10 @@
 	//If the user is logged in and is looking at a question, present the option to answer the question
 	if(isset($_SESSION['uid']) && isset($_POST['qid']))
 	{
-		echo "<th><form method='post' action='submit_answer.php'>
+		echo "<br><th><form method='post' action='submit_answer.php'>
 			<center><button input type='link' name='qid' value=$_POST[qid]>Submit Answer</button></center>
 			</form>
-		</th>";
+		</th><br>";
 	}
 ?>
   
