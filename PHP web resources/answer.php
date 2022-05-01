@@ -5,29 +5,39 @@
     <title>Databases Project Title</title>
   </head>
 
+  <body>
+
 <?php
 	include 'header.php';
+    include 'db_connection_project.php';
+    $conn = OpenCon();
 	$header = returnHeader();
 	echo $header;
-	
+	echo '<h2 style="text-align: center">ANSWERS PAGE</h2>';
+
+    if(isset($_POST['qid']))
+    {
+        $qid = $_POST['qid'];
+        $sql = "select title, body from questions where qid = $qid";
+        $stmt = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_array($stmt);
+        echo '<center><br><h4>' . $row['title'] . '</h4><h5>' . $row['body'] . '</h5></center>';
+    }
+
 	//If the user is logged in and is looking at a question, present the option to answer the question
 	if(isset($_SESSION['uid']) && isset($_POST['qid']))
 	{
 		echo "<th><form method='post' action='submit_answer.php'>
-			<button input type='link' name='qid' value=$_POST[qid]>Submit Answer</button>
+			<center><button input type='link' name='qid' value=$_POST[qid]>Submit Answer</button></center>
 			</form>
 		</th>";
 	}
 ?>
-  <body>
-    <h2 style="text-align: center">ANSWERS PAGE</h2>
+  
   </body>
 </html>
 
 <?php
-	include 'db_connection_project.php';
-	$conn = OpenCon();
-	
 	
 	/* If a user wanted to like an answer or set an answer as best answer */
 	if(isset($_POST['like']) && isset($_POST['qid']))
@@ -46,6 +56,8 @@
 	if(isset($_POST['qid']))
 	{
 		$qid = $_POST['qid'];
+
+        
 		$sql = "select * 
 				from answers, post_answers, users
 				where post_answers.qid = $qid

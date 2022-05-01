@@ -21,7 +21,7 @@
 	if(isset($_SESSION['uid']))
 	{
 		echo "<th> <form method='post' action='submit_question.php'>
-			<button input type='link' name='question' value='$_SESSION[uid]'>Submit Question</button>
+			<center><button input type='link' name='question' value='$_SESSION[uid]'>Submit Question</button></center>
 			</form>
 		</th>";
 	}

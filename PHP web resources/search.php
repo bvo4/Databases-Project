@@ -192,7 +192,7 @@ function search_question($title_keyword, $topic, $keyword)
 				. "<th>" . $row['body'] ."</th> " . "</th>"
 				. "<th>" . $row['timeposted'] . "</th>"
 				. "<th> <form method='post' action='answer.php'>
-							<button input type='link' name='answer' value=$row[qid]>View More</button>
+							<button input type='link' name='qid' value=$row[qid]>View More</button>
 						</form>
 				  </th>"
 				."</tr>"
