@@ -56,7 +56,6 @@
 	if(isset($_POST['qid']))
 	{
 		$qid = $_POST['qid'];
-
         
 		$sql = "select * 
 				from answers, post_answers, users
@@ -73,6 +72,19 @@
 	{
 		$post_qid = $_SESSION['post_qid'];
 		unset ($_SESSION['post_qid']);
+        
+        $sql = "select title, body from questions where qid = $post_qid";
+        $stmt = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_array($stmt);
+        echo '<center><br><h4>' . $row['title'] . '</h4><h5>' . $row['body'] . '</h5></center>';
+        
+        if(isset($_SESSION['uid']))
+        {
+            echo "<br><th><form method='post' action='submit_answer.php'>
+                <center><button input type='link' name='qid' value=$post_qid>Submit Answer</button></center>
+                </form>
+            </th><br>";
+        }
 		
 		$sql = "select * 
 				from answers, post_answers, users
@@ -134,8 +146,8 @@
 	{
 		include 'reactjs.php';
 		$conn = OpenCon();
-		$sql = "select uid from post_answers where qid = $qid";
-		$user_question_id = grab_first_row($conn, $sql);
+		$sql = "select uid from post_question where qid = $qid";
+		$user_question_id = mysqli_fetch_array(mysqli_query($conn, $sql));
 		$user_question_id = $user_question_id['uid'];
 		
 		//Print answer table header
@@ -146,9 +158,11 @@
 			<th> Body:  </th>
 			<th> Username:  </th>
 			<th> Likes:  </th>
-			<th> Date:  </th>
-			<th>Leave a Like?</th>
-			<th>Select as best answer?</th></tr>";
+			<th> Date:  </th>";
+        if(isset($_SESSION['uid'])){
+			echo "<th>Leave a Like?</th>";
+            }
+        echo "<th>Best Answer</th></tr>";
 			
 			//Print answer contents
 			while($row = mysqli_fetch_array($stmt))
@@ -164,7 +178,7 @@
 						. "<th>" . $row['timeposted'] . "</th>";
 				
 				/* Check if the user made this answer */
-				if(isset($_SESSION['uid']) && $_SESSION['uid'] != $user_question_id)
+				if(isset($_SESSION['uid']) && $_SESSION['uid'] != $row['uid'])
 				{
 					/* Check if the user has already liked this answer */
 					if(isset($like_stmt) && $like_match)
@@ -188,14 +202,14 @@
 				}
 					$test .= "</form>";
 					/* Inform the user that this is the user's answer */
-					if(isset($_SESSION['uid']) && $_SESSION['uid'] == $user_question_id)
+					if(isset($_SESSION['uid']) && $_SESSION['uid'] == $row['uid'])
 					{
 						$test .= "
-								<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>This is your answer!</button>
+								<th><button class='btn btn-light'>This is your answer!</button>
 								</th> ";
 					}
 					/* Check if the question is selected as best answer.  Otherwise, give the user an option to select this answer as best answer */
-					else if($row['best'] == False)
+                    if($row['best'] == False && $_SESSION['uid'] == $user_question_id)
 					{
 					$test .= "<form method='post' action='answer.php?qid=$qid'>
 							<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>Select</button>
@@ -204,7 +218,7 @@
 								</form>";
 						}
 					/* If this is already selected as best answer, inform the user */
-					else
+					else if($row['best'])
 					{
 					$test .= "
 							<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>This is Best Answer</button>
