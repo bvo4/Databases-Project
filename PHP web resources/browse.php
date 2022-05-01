@@ -85,7 +85,7 @@ padding: 10px;
 
 <?php
 	include 'db_connection_project.php';
-	echo '<body> Please select the following topics that you believe your answer may belong to.</body>';
+	echo '<body> <center>Please select the following topics that you believe your answer may belong to.</center></body>';
 	grab_topics();
 	grab_subtopics();
 	search_options();
