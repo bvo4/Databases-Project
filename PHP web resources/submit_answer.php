@@ -112,7 +112,7 @@ if(isset($_POST['body']))
 	
 	/* Insert into post_answers table */
 	$sql = "INSERT INTO post_answers(uid, qid, aid, grade, weight, best, timeposted)
-			VALUES ($_SESSION[uid], $qid[qid], $aid, 1, 1, False, '$date')";
+			VALUES ($_SESSION[uid], $qid[qid], $aid, 0, 1, False, '$date')";
 	mysqli_query($conn, $sql);
 	
 	/* Redirects the user to the answer page for that particular question by storing it in a temporary session variable
