@@ -146,3 +146,10 @@ INSERT INTO post_answers(uid, qid, aid, grade, weight, best, timeposted)
 VALUES (8, 1, 10, 1, 0, False, '2021-07-22 03:41:18');
 INSERT INTO post_answers(uid, qid, aid, grade, weight, best, timeposted) 
 VALUES (7, 1, 11, 5, 5, True, '2023-12-31 16:11:09');
+
+CREATE DEFINER=`root`@`localhost` TRIGGER `project`.`likes_AFTER_INSERT` AFTER INSERT ON `likes` FOR EACH ROW
+BEGIN
+	update post_answers
+    set grade = grade + 1
+    where aid = new.aid;
+END
