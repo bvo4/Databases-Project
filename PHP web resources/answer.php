@@ -118,7 +118,8 @@
 			$sql_like_check = "select * from users, likes
 								where likes.uid = users.uid
 								and users.uid = $uid
-								;";
+								";
+			//echo "SQL : " . $sql_like_check . "<br/>";
 			$like_stmt = mysqli_query($conn, $sql_like_check);
 		}
 		
@@ -167,8 +168,6 @@
 			//Print answer contents
 			while($row = mysqli_fetch_array($stmt))
 			{
-				$like_match = check_likes($like_stmt, $row['aid']);
-		
 				$test =
 						"<tr>"
 						. "<th>" . $row['aid'] ."</th> "
@@ -178,8 +177,9 @@
 						. "<th>" . $row['timeposted'] . "</th>";
 				
 				/* Check if the user made this answer */
-				if(isset($_SESSION['uid']) && $_SESSION['uid'] != $row['uid'])
+				if(isset($_SESSION['uid']) && ($_SESSION['uid'] != $row['uid']))
 				{
+					$like_match = check_likes($like_stmt, $row['aid']);
 					/* Check if the user has already liked this answer */
 					if(isset($like_stmt) && $like_match)
 					{
@@ -190,6 +190,8 @@
 					/* Otherwise, show an option to like the answer */
 					else
 					{
+						echo "$_SESSION[uid] != $row[uid]";
+						echo "<br/> LIKE: " . $like_match;
 						$test .="<form method='post' action='answer.php'>"
 						. "<input type='hidden' name='qid' value=$qid>";
 						if(isset($_SESSION['uid']))
@@ -200,33 +202,35 @@
 						}
 					}
 				}
-					$test .= "</form>";
-					/* Inform the user that this is the user's answer */
-					if(isset($_SESSION['uid']) && $_SESSION['uid'] == $row['uid'])
-					{
-						$test .= "
-								<th><button class='btn btn-light'>This is your answer!</button>
-								</th> ";
-					}
-					/* Check if the question is selected as best answer.  Otherwise, give the user an option to select this answer as best answer */
-                    if($row['best'] == False && $_SESSION['uid'] == $user_question_id)
-					{
-					$test .= "<form method='post' action='answer.php?qid=$qid'>
-							<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>Select</button>
-							</th> "
-						. "<input type='hidden' name='qid' value=$qid>
-								</form>";
-						}
-					/* If this is already selected as best answer, inform the user */
-					else if($row['best'])
-					{
+				$test .= "</form>";
+				
+				/* Inform the user that this is the user's answer */
+				if(isset($_SESSION['uid']) && $_SESSION['uid'] == $row['uid'])
+				{
 					$test .= "
-							<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>This is Best Answer</button>
+							<th><button class='btn btn-light'>This is your answer!</button>
 							</th> ";
+				}
+				
+				/* Check if the question is selected as best answer.  Otherwise, give the user an option to select this answer as best answer */
+                if($row['best'] == False && $_SESSION['uid'] == $user_question_id)
+				{
+				$test .= "<form method='post' action='answer.php?qid=$qid'>
+						<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>Select</button>
+						</th> "
+					. "<input type='hidden' name='qid' value=$qid>
+							</form>";
 					}
-					$test .="</tr>";
+				/* If this is already selected as best answer, inform the user */
+				if($row['best'])
+				{
+				$test .= "
+						<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>This is Best Answer</button>
+						</th> ";
+				}
+				$test .="</tr>";
 					
-					echo $test;
+				echo $test;
 			}
 				echo "</table>";
 	}
