@@ -33,14 +33,14 @@ echo $header;
 	/* If the user opted to search for questions */
 	if(isset($_POST['Check_Question']))
 	{
-		echo "Search based on Questions: <br/>";
+		echo "<h5><center>Search based on Questions: </center></h5>";
 		search_question($title_keyword, $topic, $keyword);
 	}
 	/* If the user opted to search for answers */
 	if(isset($_POST['Check_Answer']))
 	{
 		$keyword = answer_keyword_search();
-		echo "Search based off Answers: <br/>";
+		echo "<h5><center>Search based off Answers: </center></h5>";
 		search_answers($topic, $keyword);
 	}
 	/* If the user didn't opt to search for anything */
@@ -206,7 +206,7 @@ function search_question($title_keyword, $topic, $keyword)
 	  $greenthing = '<div class="row">
 					<div class="col-sm">
 						<div class="alert alert-danger">
-							No Questions Found!
+							<center>No Questions Found!</center>
 						</div>
 					</div>
 					</div>';
@@ -284,7 +284,7 @@ function search_answers($topic, $keyword)
 	  $greenthing = '<div class="row">
 					<div class="col-sm">
 						<div class="alert alert-danger">
-							No Answers Found!
+							<center>No Answers Found!</center>
 						</div>
 					</div>
 					</div>';

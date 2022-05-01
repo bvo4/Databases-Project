@@ -25,7 +25,7 @@
    ?>
 
    </br></br></br>
-   <h3 style="text-align: center"><a href= '/Databases-Project/PHP%20web%20resources/browse.php'>Browse </a>By Questions using Keywords and Topics</h3>
+   <h3 style="text-align: center"><a href= '/Databases-Project/PHP%20web%20resources/browse.php'>Browse</a> By Questions or Answers using Keywords and Topics</h3>
 
    </br></br></br>
    <h3 style="text-align: center">Current Top 5 Questions</h3>
