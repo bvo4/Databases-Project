@@ -62,10 +62,18 @@
 		/* Outputs each row found into the table */
 		while($row = mysqli_fetch_array($stmt))
 		{
+			$test = '';
+			if($row['resolved'] == True)
+			{
+				$test = "<tr style='background: pink;'>";
+			}
+			else
+			{
+				$test = "<tr>";
+			}
 		/* Outputs the table of all questions */
-		$test =
-				"<tr>"
-				. "<th>" . $row['username'] ."</th> "
+		$test .=
+				"<th>" . $row['username'] ."</th> "
 				. "<th>" . $row['title'] ."</th>". "</th>"
 				. "<th>" . $row['body'] ."</th> " . "</th>"
 				. "<th>" . $row['timeposted'] . "</th>"
