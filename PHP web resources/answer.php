@@ -168,9 +168,19 @@
 			//Print answer contents
 			while($row = mysqli_fetch_array($stmt))
 			{
-				$test =
-						"<tr>"
-						. "<th>" . $row['aid'] ."</th> "
+				
+				$test = '';
+				if($row['best'] == True)
+				{
+					$test = "<tr style='background: red;'>";
+				}
+				else
+				{
+					$test = "<tr>";
+				}
+				
+				$test .=
+						"<th>" . $row['aid'] ."</th> "
 						. "<th>" . $row['body'] ."</th>". "</th>"
 						. "<th>" . $row['username'] ."</th> " . "</th>"
 						. "<th>" . $row['grade'] . "</th>"
