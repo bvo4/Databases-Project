@@ -15,8 +15,7 @@ CREATE TABLE answers (
 );
 CREATE TABLE topic (
   tid INT NOT NULL primary key,
-  tname VARCHAR(50),
-  hierarchy INT NOT NULL);
+  tname VARCHAR(50);
 CREATE TABLE subtopic (
   stid INT NOT NULL primary key,
   tid INT references topic(tid),
