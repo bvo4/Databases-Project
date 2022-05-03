@@ -37,44 +37,71 @@
 	
 	/* Chooses the 5 most recently posted questions */
 	$sql = "select *
-			from questions, post_question, users
+			from questions, post_question, users, subtopic
 			where questions.qid = post_question.qid
 			and post_question.uid = users.uid
+			and questions.stid = subtopic.stid
 			order by timeposted desc
 			limit 5
 			";
 	$stmt = mysqli_query($conn, $sql);
+	$num = mysqli_num_rows($stmt);
 	
-	/* Builds the header table for the questions */
-	echo "<br/>
-		  <table style = 'width:100%' class='table table-dark table-hover'>
-		  <tr>
-		  <th> Username:  </th>
-		  <th> Title:  </th>
-		  <th> Body:  </th>
-		  <th> Date:  </th>
-		  <th> View Answers:  </th>
-		  </tr>
-		";
-		/* Outputs the questions contents */
-	while($row = mysqli_fetch_array($stmt))
+	//Check if we found a row, otherwise, output a generic error message.
+	if($num > 0)
 	{
-	
-	$test =
-			"<tr>"
-			. "<th>" . $row['username'] ."</th> "
-			. "<th>" . $row['title'] ."</th>". "</th>"
-			. "<th>" . $row['body'] ."</th> " . "</th>"
-			. "<th>" . $row['timeposted'] . "</th>"
-			. "<th> <form method='post' action='answer.php'>
-						<button input type='link' name='qid' value=$row[qid]>View More</button>
-					</form>
-			  </th>"
-			."</tr>"
-			;
-			echo $test;
+		/* Builds the header table for the questions */
+		echo "<br/>
+			  <table style = 'width:100%' class='table table-dark table-hover'>
+			  <tr>
+			  <th> Username:  </th>
+			  <th> Topic:  </th>
+			  <th> Title:  </th>
+			  <th> Body:  </th>
+			  <th> Date:  </th>
+			  <th> View Answers:  </th>
+			  </tr>
+			";
+		/* Outputs each row found into the table */
+		while($row = mysqli_fetch_array($stmt))
+		{
+			$test = '';
+			if($row['resolved'] == True)
+			{
+				$test = "<tr style='background: pink;'>";
+			}
+			else
+			{
+				$test = "<tr>";
+			}
+		/* Outputs the table of all questions */
+		$test .=
+				"<th>" . $row['username'] ."</th> "
+				. "<th>" . $row['sname'] ."</th> "
+				. "<th>" . $row['title'] ."</th>". "</th>"
+				. "<th>" . $row['body'] ."</th> " . "</th>"
+				. "<th>" . $row['timeposted'] . "</th>"
+				. "<th> <form method='post' action='answer.php'>
+							<button input type='link' name='qid' value=$row[qid]>View More</button>
+						</form>
+				  </th>"
+				."</tr>"
+				;
+				echo $test;
+		}
+		echo "</table>";
 	}
-	echo "</table>";
+	else
+	{
+		$greenthing = '<div class="row">
+					<div class="col-sm">
+						<div class="alert alert-danger">
+							Unforutnately, we have no questions available.
+						</div>
+					</div>
+					</div>';
+			echo $greenthing;	
+	}
 	?>
 
   </body>

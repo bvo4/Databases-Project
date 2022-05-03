@@ -185,9 +185,19 @@ function search_question($title_keyword, $topic, $keyword)
 		while($row = mysqli_fetch_array($stmt))
 		{
 		
-		$test =
-				"<tr>"
-				. "<th>" . $row['username'] ."</th> "
+			$test = '';
+			if($row['resolved'] == True)
+			{
+				$test = "<tr style='background: pink;'>";
+			}
+			else
+			{
+				$test = "<tr>";
+			}
+		
+		$test .=
+				"<th>" . $row['username'] ."</th> "
+				. "<th>" . $row['sname'] ."</th> "
 				. "<th>" . $row['title'] ."</th>". "</th>"
 				. "<th>" . $row['body'] ."</th> " . "</th>"
 				. "<th>" . $row['timeposted'] . "</th>"
@@ -220,6 +230,7 @@ function echo_table()
 		  <table style = 'width:100%' class='table table-dark table-hover'>
 		  <tr>
 		  <th> Username:  </th>
+		  <th> Topic:  </th>
 		  <th> Title:  </th>
 		  <th> Body:  </th>
 		  <th> Date:  </th>
@@ -234,7 +245,7 @@ function search_answers($topic, $keyword)
 	$keyword = str_replace('body', 'answers.body', $keyword);
 
 	$conn = OpenCon();
-	$sql = "select username, questions.qid, questions.title as title, questions.body as body, answers.body as answer, post_answers.timeposted as timeposted
+	$sql = "select username, questions.qid, questions.title as title, questions.body as body, answers.body as answer, post_answers.timeposted as timeposted, best
 			from answers, post_answers, post_question, questions, users, subtopic, topic
 			where questions.qid = post_question.qid
 			and post_question.uid = users.uid 
@@ -253,23 +264,30 @@ function search_answers($topic, $keyword)
 	$num = mysqli_num_rows($stmt);
 	
 	if($num > 0)
-	{
-		echo "<br/>
-			  <table style = 'width:100%' class='table table-dark table-hover'>
-			  <tr>
-			  <th> Username:  </th>
-			  <th> Question Title:  </th>
-			  <th> Question Body:  </th>
-			  <th> Answer:  </th>
-			  <th> Date posted:  </th>
-			  </tr>
+	{	
+	echo "<br/>
+			<table style = 'width:100%' class='table table-dark table-hover'>
+			<tr>
+			<th> Username:  </th>
+			<th> Question Title:  </th>
+			<th> Question Body:  </th>
+			<th> Answer:  </th>
+			<th> Date posted:  </th>
+			</tr>
 			";
 		
 		while($row = mysqli_fetch_array($stmt))
 		{
-		$test =
-			"<tr>"
-			. "<th>" . $row['username'] ."</th> "
+		$test = '';
+		if($row['best'] == True)
+		{
+			$test = "<tr style='background: red;'>";
+		}
+		else
+		{
+			$test = "<tr>";
+		}
+		$test .= "<th>" . $row['username'] ."</th> "
 			. "<th>" . $row['title'] ."</th> "
 			. "<th>" . $row['body'] ."</th>". "</th>"
 			. "<th>" . $row['answer'] ."</th> " . "</th>"

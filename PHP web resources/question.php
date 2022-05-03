@@ -37,9 +37,10 @@
 	$conn = OpenCon();
 
 	$sql = "select *
-			from questions, post_question, users
+			from questions, post_question, users, subtopic
 			where questions.qid = post_question.qid
 			and post_question.uid = users.uid
+			and questions.stid = subtopic.stid
 			order by timeposted desc
 			";
 	$stmt = mysqli_query($conn, $sql);
@@ -53,6 +54,7 @@
 			  <table style = 'width:100%' class='table table-dark table-hover'>
 			  <tr>
 			  <th> Username:  </th>
+			  <th> Topic:  </th>
 			  <th> Title:  </th>
 			  <th> Body:  </th>
 			  <th> Date:  </th>
@@ -74,6 +76,7 @@
 		/* Outputs the table of all questions */
 		$test .=
 				"<th>" . $row['username'] ."</th> "
+				. "<th>" . $row['sname'] ."</th> "
 				. "<th>" . $row['title'] ."</th>". "</th>"
 				. "<th>" . $row['body'] ."</th> " . "</th>"
 				. "<th>" . $row['timeposted'] . "</th>"
