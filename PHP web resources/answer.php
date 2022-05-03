@@ -265,8 +265,13 @@
 				SET best=True, grade = grade + 5, weight = weight + 5
 				WHERE qid = $qid
 				and aid = $aid";
-		
 		$stmt = mysqli_query($conn, $sql);
+		
+		$sql = "UPDATE post_question
+				SET resolved=True
+				WHERE qid = $qid";
+		$stmt = mysqli_query($conn, $sql);
+			
 	}
 	
 ?>
