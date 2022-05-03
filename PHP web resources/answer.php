@@ -200,8 +200,6 @@
 					/* Otherwise, show an option to like the answer */
 					else
 					{
-						echo "$_SESSION[uid] != $row[uid]";
-						echo "<br/> LIKE: " . $like_match;
 						$test .="<form method='post' action='answer.php'>"
 						. "<input type='hidden' name='qid' value=$qid>";
 						if(isset($_SESSION['uid']))
@@ -270,18 +268,55 @@
 		$aid = $_POST['best'];
 		$uid = $_SESSION['uid'];
 		
+		
+		/* Updates the answer to be set as best answer */
 		$qid = $_POST['qid'];
+		
+		overwrite_best($conn, $qid, $aid, $uid);
+		
 		$sql = "UPDATE post_answers
 				SET best=True, grade = grade + 5, weight = weight + 5
 				WHERE qid = $qid
 				and aid = $aid";
 		$stmt = mysqli_query($conn, $sql);
 		
+		
+		
+		/* Updates the question to be resolved */
 		$sql = "UPDATE post_question
 				SET resolved=True
 				WHERE qid = $qid";
 		$stmt = mysqli_query($conn, $sql);
 			
+	}
+	
+	/* Searches for any pre-existing best answers and unmarks them */
+	function overwrite_best($conn, $qid, $aid, $uid)
+	{
+		$sql = "SELECT *
+				FROM post_answers
+				WHERE best = True
+				and qid = $qid";
+				
+		$stmt = mysqli_query($conn, $sql);
+		$num = mysqli_num_rows($stmt);
+		
+		/* This will work under the assumption that only one best answer will ever be chosen */
+		if($num > 0)
+		{
+			//Unset a different best answer as false
+			$row = mysqli_fetch_array($stmt);
+			
+			$test = $row['aid'] ."<br/> ";
+			$num = mysqli_num_rows($stmt);
+
+			$sql = "UPDATE post_answers
+					SET best=False, grade = grade - 5, weight = weight - 5
+					WHERE qid = $qid
+					and aid = $row[aid]";
+			$stmt = mysqli_query($conn, $sql);
+			
+		}
 	}
 	
 ?>
