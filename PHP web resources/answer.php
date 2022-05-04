@@ -63,6 +63,7 @@
 				and answers.aid = post_answers.aid
 				and users.uid = post_answers.uid
 				order by timeposted desc";
+        mysqli_query($conn, $sql);
 		print_sql($conn, $sql, $qid);
 		
 	}
@@ -109,26 +110,14 @@
 	
 	function print_sql($conn, $sql, $qid)
 	{
-		$like_stmt = null;
-		
-		if(isset($_SESSION['uid']))
-		{
-			/* Grab the list of likes made by that user */
-			$uid = $_SESSION['uid'];
-			$sql_like_check = "select * from users, likes
-								where likes.uid = users.uid
-								and users.uid = $uid
-								";
-			//echo "SQL : " . $sql_like_check . "<br/>";
-			$like_stmt = mysqli_query($conn, $sql_like_check);
-		}
+    
 		
 		$stmt = mysqli_query($conn, $sql);
 		$num = mysqli_num_rows($stmt);
 		
 		if($num > 0)
 		{
-			print_answer($stmt, $like_stmt, $qid);
+			print_answer($stmt, $qid);
 		}
 		else
 		{
@@ -143,7 +132,7 @@
 		}
 	}
 	
-	function print_answer($stmt, $like_stmt, $qid)
+	function print_answer($stmt, $qid)
 	{
 		include 'reactjs.php';
 		$conn = OpenCon();
@@ -189,9 +178,9 @@
 				/* Check if the user made this answer */
 				if(isset($_SESSION['uid']) && ($_SESSION['uid'] != $row['uid']))
 				{
-					$like_match = check_likes($like_stmt, $row['aid']);
+					$like_match = check_likes($row['aid']);
 					/* Check if the user has already liked this answer */
-					if(isset($like_stmt) && $like_match)
+					if($like_match)
 					{
 						$test .="<th><button type='submit' name='like' value=$row[aid] class='btn btn-secondary'>
 									You have already liked this
@@ -244,20 +233,30 @@
 	}
 	
 	/* Function to check for the list of likes made by that user */
-	function check_likes($like_stmt, $question_aid)
+	function check_likes($question_aid)
 	{
-		$like_match = False;
-		if(isset($like_stmt))
-		{
-			while($like_check = mysqli_fetch_array($like_stmt))
-			{
-				if($like_check['aid'] == $question_aid)
-				{
-					$like_match = True;
-					break;
-				}
-			}
-		}
+        $like_match = False;
+        if(isset($_SESSION['uid'])){
+            $conn = OpenCon();
+            $uid = $_SESSION['uid'];
+            $sql_like_check = "select * from likes
+                                where uid = $uid
+                                ";
+            //echo "SQL : " . $sql_like_check . "<br/>";
+            $like_stmt = mysqli_query($conn, $sql_like_check);
+            if(isset($like_stmt))
+            {
+                while($like_check = mysqli_fetch_array($like_stmt))
+                {
+                    if($like_check['aid'] == $question_aid)
+                    {
+                        $like_match = True;
+                        break;
+                    }
+                }
+            }
+            
+        }
 		return $like_match;
 	}
 	
