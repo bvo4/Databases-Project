@@ -53,7 +53,6 @@
 	if(isset($_POST['unlike']) && isset($_POST['qid']))
 	{
 		$sql = "DELETE FROM likes WHERE uid = $_SESSION[uid] and aid = $_POST[unlike]";
-		echo "UNLIKE: " . $sql;
 		mysqli_query($conn, $sql);
 		
 		$sql = "DELETE FROM likes WHERE uid = $_SESSION[uid] and aid = $_POST[unlike]";
