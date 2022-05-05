@@ -73,7 +73,7 @@
 				where post_answers.qid = $qid
 				and answers.aid = post_answers.aid
 				and users.uid = post_answers.uid
-				order by timeposted desc";
+				order by best desc, grade desc, timeposted desc";
         mysqli_query($conn, $sql);
 		print_sql($conn, $sql, $qid);
 		
@@ -224,7 +224,7 @@
 				}
 				
 				/* Check if the question is selected as best answer.  Otherwise, give the user an option to select this answer as best answer */
-                if($row['best'] == False && $_SESSION['uid'] == $user_question_id)
+                if($row['best'] == False && isset($_SESSION['uid']) && $_SESSION['uid'] == $user_question_id)
 				{
 				$test .= "<form method='post' action='answer.php?qid=$qid'>
 						<th><button type='submit' name='best' value=$row[aid] class='btn btn-light'>Select</button>
