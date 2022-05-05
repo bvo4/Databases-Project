@@ -156,7 +156,6 @@
 		echo "
 			<table class = 'table table-dark table-hover' style = 'width:100%'>
 			<tr>
-			<th> Aid:  </th>
 			<th> Body:  </th>
 			<th> Username:  </th>
 			<th> Likes:  </th>
@@ -182,8 +181,7 @@
 				}
 				
 				$test .=
-						"<th>" . $row['aid'] ."</th> "
-						. "<th>" . $row['body'] ."</th>". "</th>"
+						"<th>" . $row['body'] ."</th>". "</th>"
 						. "<th>" . $row['username'] ."</th> " . "</th>"
 						. "<th>" . $row['grade'] . "</th>"
 						. "<th>" . $row['timeposted'] . "</th>";
@@ -198,7 +196,7 @@
 						$test .= "<form method='post' action='answer.php'>";
 						$test .="<th>
 								<button type='submit' name='unlike' value=$row[aid] class='btn btn-secondary'>
-									You have already liked this
+									Unlike
 								</button>
 								</th>
 								<input type='hidden' name='qid' value=$qid>
