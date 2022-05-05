@@ -48,6 +48,18 @@
 		$sql = "INSERT INTO likes(aid, uid, points) VALUES ($aid, $_SESSION[uid], 1)";
 		mysqli_query($conn, $sql);
 	}
+	
+	/* Unlike a post */
+	if(isset($_POST['unlike']) && isset($_POST['qid']))
+	{
+		$sql = "DELETE FROM likes WHERE uid = $_SESSION[uid] and aid = $_POST[unlike]";
+		echo "UNLIKE: " . $sql;
+		mysqli_query($conn, $sql);
+		
+		$sql = "DELETE FROM likes WHERE uid = $_SESSION[uid] and aid = $_POST[unlike]";
+		
+	}
+	
 	if(isset($_POST['best']))
 	{
 		select_best();
@@ -152,6 +164,7 @@
         if(isset($_SESSION['uid'])){
 			echo "<th>Leave a Like?</th>";
             }
+		
         echo "<th>Best Answer</th></tr>";
 			
 			//Print answer contents
@@ -182,9 +195,14 @@
 					/* Check if the user has already liked this answer */
 					if($like_match)
 					{
-						$test .="<th><button type='submit' name='like' value=$row[aid] class='btn btn-secondary'>
+						$test .= "<form method='post' action='answer.php'>";
+						$test .="<th>
+								<button type='submit' name='unlike' value=$row[aid] class='btn btn-secondary'>
 									You have already liked this
-								</button></th>";
+								</button>
+								</th>
+								<input type='hidden' name='qid' value=$qid>
+								</form>";
 					}
 					/* Otherwise, show an option to like the answer */
 					else
@@ -204,8 +222,7 @@
 				/* Inform the user that this is the user's answer */
 				if(isset($_SESSION['uid']) && $_SESSION['uid'] == $row['uid'])
 				{
-					$test .= "
-							<th><button class='btn btn-light'>This is your answer!</button>
+					$test .= "<th><button type='submit' name='unlike' class='btn btn-light' value=$row[aid]>This is your answer!</button>
 							</th> ";
 				}
 				
@@ -315,6 +332,25 @@
 					and aid = $row[aid]";
 			$stmt = mysqli_query($conn, $sql);
 			
+		}
+	}
+	
+	function same_poster($qid)
+	{
+		$conn = OpenCon();
+		$uid = $_SESSION['uid'];
+        $sql_like_check = "select * from post_question
+                           where uid = $uid
+                           ";
+		$stmt = mysqli_query($conn, $sql);
+		$num = mysqli_num_rows($stmt);
+		if($row = mysqli_fetch_array($stmt) && $row['uid'] == $uid)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 	
