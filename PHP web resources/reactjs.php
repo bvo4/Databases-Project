@@ -81,4 +81,70 @@ function write_update($row)
 	}
 }
 
+function write_question_update($row)
+{
+	$sql_edit = "SET ";
+	$previous_change = False;
+	
+	if(isset($_POST['title']) && strcmp($_POST['title'], $row['title']) !== 0)
+	{
+		$sql_edit .= 'title = "' . $_POST['title'] . '"';
+		$previous_change = True;
+	}
+	
+	if(isset($_POST['body']) && strcmp($_POST['body'], $row['body']) !== 0)
+	{
+		if($previous_change)
+		{
+			$sql_edit .= ', ';
+		}
+		$sql_edit .= 'body = "' . $_POST['body'] . '"';
+		$previous_change = True;
+	}
+	
+	if(isset($_POST['stid']) && strcmp($_POST['stid'], $row['stid']) !== 0)
+	{
+		if($previous_change)
+		{
+			$sql_edit .= ', ';
+		}
+		$sql_edit .= 'stid = ' . $_POST['stid'];
+		$previous_change = True;
+	}
+	
+	//Returns sql query for the update.
+	if($previous_change)
+	{
+		return $sql_edit;
+	}
+	//If no changes found, output -1
+	else
+	{
+		return '-1';
+	}
+}
+
+function write_answer_update($row)
+{
+	$sql_edit = "SET ";
+	$previous_change = False;
+	
+	if(isset($_POST['body']) && strcmp($_POST['body'], $row['body']) !== 0)
+	{
+		$sql_edit .= 'body = "' . $_POST['body'] . '"';
+		$previous_change = True;
+	}
+	
+	//Returns sql query for the update.
+	if($previous_change)
+	{
+		return $sql_edit;
+	}
+	//If no changes found, output -1
+	else
+	{
+		return '-1';
+	}	
+}
+
 ?>

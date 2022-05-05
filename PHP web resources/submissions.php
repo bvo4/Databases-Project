@@ -75,6 +75,10 @@ function post_answers()
 				. "<th>" . $row['body'] . "</th>"
 				. "<th>" . $row['grade'] . "</th>"
 				. "<th>" . $row['timeposted'] . "</th>"
+				. "<th> <form method='post' action='edit_answer.php'>
+							<button input type='link' name='aid' value=$row[aid]>Edit</button>
+						</form>
+				  </th>"
 				."</tr>"
 				;
 					echo $test;
@@ -127,6 +131,10 @@ function post_questions()
 								<button input type='link' name='answer' value=$row[qid]>View More</button>
 							</form>
 					  </th>"
+					. "<th> <form method='post' action='edit_question.php'>
+								<button input type='link' name='qid' value=$row[qid]>Edit</button>
+							</form>
+					  </th>"
 					."</tr>"
 					;
 					echo $test;
@@ -158,6 +166,7 @@ function echo_table()
 		  <th> Body:  </th>
 		  <th> Date:  </th>
 		  <th> View Answers:  </th>
+		  <th> Edit Question?</th>
 		  </tr>
 		";
 }
@@ -174,6 +183,7 @@ function echo_table_answers()
 		  <th> Your answer:  </th>
 		  <th> Liked received:  </th>
 		  <th> Time posted: </th>
+		  <th> Edit Answer?</th>
 		  </tr>
 		";
 }

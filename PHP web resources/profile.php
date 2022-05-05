@@ -157,7 +157,6 @@ function update()
 				$sql_edit
 				where uid = $_SESSION[uid]
 				";
-		echo "UPDATE: " . $sql;
 		$stmt = mysqli_query($conn, $sql);
 		if(!$stmt)
 		{
