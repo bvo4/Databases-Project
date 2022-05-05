@@ -88,7 +88,14 @@ function update()
 	
 	if($sql_edit == '-1')
 	{
-		echo "ERROR:  NO CHANGE DETECTED";
+	  $greenthing = '<div class="row">
+					<div class="col-sm">
+						<div class="alert alert-danger">
+							You did not change anything!
+						</div>
+					</div>
+					</div>';
+	echo $greenthing;
 	}
 	else
 	{

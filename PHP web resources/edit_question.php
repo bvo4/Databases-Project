@@ -72,7 +72,7 @@
 					<td>
 					<select class='form-control' id='select_1' name='stid'>";
 					
-					$form .=topic_list();
+					$form .=topic_list($qid);
 				
 		$form .="
 				</td>
@@ -114,7 +114,14 @@ function update()
 	
 	if($sql_edit == '-1')
 	{
-		echo "ERROR:  NO CHANGE DETECTED";
+	  $greenthing = '<div class="row">
+					<div class="col-sm">
+						<div class="alert alert-danger">
+							You did not change anything!
+						</div>
+					</div>
+					</div>';
+	echo $greenthing;
 	}
 	else
 	{
@@ -145,14 +152,29 @@ if(isset($_POST['save']))
 function topic_list()
 {
 	$conn = OpenCon();
-	
+	$qid = $_POST['qid'];
 	$sql = "select *
 			from subtopic";
+			
+	$sql_check = "select stid from questions where qid = $qid";
+			
 	$stmt = mysqli_query($conn, $sql);
+	
+	$stid = mysqli_query($conn, $sql_check);
+	$stid = mysqli_fetch_array($stid)['stid'];
 	$test = '';
+	
+	
 	while($row = mysqli_fetch_array($stmt))
 	{
+		if($row['stid'] != $stid)
+		{
 		$test .= "<option class='dropdown-item' value=" . $row['stid'] . ">" . $row['sname'] . "</option> ";
+		}
+		else
+		{
+			$test .= "<option selected class='dropdown-item' value=" . $row['stid'] . ">" . $row['sname'] . "</option> ";
+		}
 	}
 	return $test;
 }
