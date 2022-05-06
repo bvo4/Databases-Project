@@ -33,7 +33,8 @@ CREATE TABLE questions (
 CREATE TABLE likes (
   aid int references answers(aid),
   uid int references users(uid),
-  points int
+  points int,
+  r_uid int references users(uid)
   );
 CREATE TABLE post_question (
   qid INT references questions(qid),
@@ -149,56 +150,59 @@ INSERT INTO post_answers(uid, qid, aid, grade, weight, best, timeposted)
 VALUES (7, 5, 11, 5, 5, False, '2023-12-31 16:11:09');
 
 
-DELIMITER $$
 CREATE DEFINER=`root`@`localhost` TRIGGER `project`.`likes_AFTER_INSERT` AFTER INSERT ON `likes` FOR EACH ROW
 BEGIN
+
     DECLARE temp INT DEFAULT 0;
-    set temp = (select sum(points) as amt
-                from users, likes
-                where likes.uid = users.uid
-                and new.uid = users.uid
-                group by users.uid);
+    set temp = (select sum(points)
+                from likes, post_answers, users
+                where post_answers.uid = likes.r_uid
+                and users.uid = post_answers.uid
+                and likes.r_uid = new.r_uid
+                group by likes.r_uid);
                 
     if(temp > 20)
     then UPDATE users
-        SET users.`status` = "Intermediate"
-        WHERE users.uid = new.uid;
+        SET users.status = "Intermediate"
+        WHERE users.uid = new.r_uid;
     END IF;
-    
+
     IF(temp > 50)
     THEN UPDATE users
-        SET users.`status` = "Expert"
-         WHERE users.uid = new.uid;
+        SET users.status = "Expert"
+         WHERE users.uid = new.r_uid;
     END IF;
-    
+
     update post_answers
     set grade = grade + 1
     where aid = new.aid;
 END
 
-
-CREATE DEFINER=`root`@`localhost` TRIGGER `project`.`likes_BEFORE_DELETE` BEFORE DELETE ON `likes` FOR EACH ROW
+CREATE DEFINER=`root`@`localhost` TRIGGER project.likes_BEFORE_DELETE BEFORE DELETE ON likes FOR EACH ROW
 BEGIN
+
     DECLARE temp INT DEFAULT 0;
     set temp = (select sum(points)
-				from users, likes
-                where likes.uid = users.uid
-                and old.uid = users.uid
-                group by users.uid);
-           
-	IF(temp < 50)
+                from likes, post_answers, users
+                where post_answers.uid = likes.r_uid
+                and users.uid = post_answers.uid
+                and likes.r_uid = old.r_uid
+                group by likes.r_uid);
+
+    IF(temp < 50)
     THEN UPDATE users
-		SET users.`status` = "Intermediate"
-         WHERE users.uid = old.uid;
+        SET users.status = "Expert"
+         WHERE users.uid = old.r_uid;
     END IF;
-           
-	if(temp < 20)
+
+
+    if(temp < 20)
     then UPDATE users
-		SET users.`status` = "Beginner"
-        WHERE users.uid = old.uid;
-	END IF;
-    
-	update post_answers
+        SET users.status = "Intermediate"
+        WHERE users.uid = old.r_uid;
+    END IF;
+
+    update post_answers
     set grade = grade - 1
     where aid = old.aid;
 END
