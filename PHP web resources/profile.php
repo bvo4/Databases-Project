@@ -54,7 +54,7 @@
 
 				<tr>
 					<td>Password</td>
-					<td>" . str_repeat('*', strlen($row[password])) .
+					<td>" . str_repeat('*', strlen($row['password'])) .
                     "</td>
 				</tr>
 
