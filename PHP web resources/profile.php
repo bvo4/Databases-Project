@@ -18,7 +18,7 @@
 	$header = returnHeader();
 	echo $header;
 ?>
- 
+
     <title>Profile Page</title>
 </head>
 <body>
@@ -36,7 +36,7 @@
 		include 'reactjs.php';
 		include 'db_connection_project.php';
 		$conn = OpenCon();
-		
+
 		$sql = "select *
 				from users
 				where uid = $_SESSION[uid]
@@ -51,13 +51,13 @@
 					<td>Username</td>
 					<td><input type='text' name='username' value='$row[username]' class='form-control' required></td>
 				</tr>
-		  
+
 				<tr>
 					<td>Password</td>
-					<td><input type='text' name='password' value='$row[password]' class='form-control' required></td>
-
+					<td>" . str_repeat('*', strlen($row[password])) .
+                    "</td>
 				</tr>
-		 
+
 				 <tr>
 					<td>Profile</td>
 					<td>
@@ -81,23 +81,27 @@
 					<td>State</td>
 					<td><input type='text' name='state' value='$row[state]' class='form-control' required></td>
 				</tr>
-				
+
 				<tr>
 					<td>Country</td>
 					<td><input type='text' name='country' value='$row[country]' class='form-control' required></td>
 				</tr>
-		 
+
 				<tr>
 					<td></td>
 					<td>
 							<button type='submit' name='save' class='btn btn-primary'>
 								<span class='glyphicon glyphicon-plus'></span> Save
-							</button>
+							</button></form>
+              <br>
+              <form action='/Databases-Project/PHP%20web%20resources/change_password.php'>
+                <button type='submit' name='pass' class='btn btn-primary'>
+                    <span class='glyphicon glyphicon-plus'></span> Change Password
+                </button></form>
 					</td>
 				</tr>
-		  
-			</table>
-		</form>";
+
+			</table>";
 		echo $form;
 	}
 	else
@@ -142,11 +146,11 @@ function update()
 {
 	$conn = OpenCon();
 	$sql = "select * from users where uid = $_SESSION[uid]";
-	
+
 	/* Finds the user in the users table and creates an SQL update query to change the user's details */
 	$row = grab_first_row($conn, $sql);
 	$sql_edit = write_update($row);
-	
+
 	if($sql_edit == '-1')
 	{
 		echo "ERROR:  NO CHANGE DETECTED";
