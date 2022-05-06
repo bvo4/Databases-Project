@@ -44,19 +44,19 @@
 	{
 		$qid = $_POST['qid'];
 		$aid = $_POST['like'];
+		$r_uid = $_POST['r_uid'];
 		
-		$sql = "INSERT INTO likes(aid, uid, points) VALUES ($aid, $_SESSION[uid], 1)";
+		$sql = "INSERT INTO likes(aid, uid, points, r_uid) VALUES ($aid, $_SESSION[uid], 1, $r_uid)";
 		mysqli_query($conn, $sql);
+		
+		
 	}
 	
 	/* Unlike a post */
 	if(isset($_POST['unlike']) && isset($_POST['qid']))
 	{
-		$sql = "DELETE FROM likes WHERE uid = $_SESSION[uid] and aid = $_POST[unlike]";
+		$sql = "DELETE FROM likes WHERE uid = $_SESSION[uid] and aid = $_POST[unlike] and r_uid = $_POST[r_uid]";
 		mysqli_query($conn, $sql);
-		
-		$sql = "DELETE FROM likes WHERE uid = $_SESSION[uid] and aid = $_POST[unlike]";
-		
 	}
 	
 	if(isset($_POST['best']))
@@ -170,6 +170,8 @@
 			{
 				
 				$test = '';
+				$r_uid = $row['uid'];
+				
 				if($row['best'] == True)
 				{
 					$test = "<tr style='background: red;'>";
@@ -199,13 +201,16 @@
 								</button>
 								</th>
 								<input type='hidden' name='qid' value=$qid>
+								<input type='hidden' name='r_uid' value=$r_uid>
 								</form>";
 					}
 					/* Otherwise, show an option to like the answer */
 					else
 					{
 						$test .="<form method='post' action='answer.php'>"
-						. "<input type='hidden' name='qid' value=$qid>";
+						. "<input type='hidden' name='qid' value=$qid>"
+						. "<input type='hidden' name='r_uid' value=$r_uid>"
+						;
 						if(isset($_SESSION['uid']))
 						{
 							$test .= "<th><button type='submit' name='like' value=$row[aid] class='btn btn-danger'>

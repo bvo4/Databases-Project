@@ -94,7 +94,7 @@
 								<span class='glyphicon glyphicon-plus'></span> Save
 							</button></form>
               <br>
-              <form action='/Databases-Project/PHP%20web%20resources/change_password.php'>
+              <form action='change_password.php'>
                 <button type='submit' name='pass' class='btn btn-primary'>
                     <span class='glyphicon glyphicon-plus'></span> Change Password
                 </button></form>
