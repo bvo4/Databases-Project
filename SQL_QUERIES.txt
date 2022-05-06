@@ -153,25 +153,19 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` TRIGGER `project`.`likes_AFTER_INSERT` AFTER INSERT ON `likes` FOR EACH ROW
 BEGIN
     DECLARE temp INT DEFAULT 0;
-    DECLARE temp2 INT DEFAULT 0;
     set temp = (select sum(points) as amt
                 from users, likes
                 where likes.uid = users.uid
                 and new.uid = users.uid
-                group by users.uid having amt > 20);
-    set temp2 = (select sum(points) as amt
-                from users, likes
-                where likes.uid = users.uid
-                and new.uid = users.uid
-                group by users.uid having amt > 50);
+                group by users.uid);
                 
-    if(temp > 0)
+    if(temp > 20)
     then UPDATE users
         SET users.`status` = "Intermediate"
         WHERE users.uid = new.uid;
     END IF;
     
-    IF(temp2 > 0)
+    IF(temp > 50)
     THEN UPDATE users
         SET users.`status` = "Expert"
          WHERE users.uid = new.uid;

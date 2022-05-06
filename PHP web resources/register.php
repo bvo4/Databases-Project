@@ -117,7 +117,7 @@ function register()
     	$uid = $row['uid'] + 1;
       echo "uid";
     	$sql = "INSERT INTO users(uid, username, password, profile, status, city, state, country)
-    			VALUES ($uid, '$name', '$password', 'PLACEHOLDER PROFILE', 'BASIC', '$city', '$state', '$country')";
+    			VALUES ($uid, '$name', '$password', 'PLACEHOLDER PROFILE', 'BEGINNER', '$city', '$state', '$country')";
       echo "insert";
     	$stmt = mysqli_query($conn, $sql);
       echo "here12";
