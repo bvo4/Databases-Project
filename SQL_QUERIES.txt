@@ -191,14 +191,14 @@ BEGIN
 
     IF(temp < 50)
     THEN UPDATE users
-        SET users.status = "Expert"
+        SET users.status = "Intermediate"
          WHERE users.uid = old.r_uid;
     END IF;
 
 
     if(temp < 20)
     then UPDATE users
-        SET users.status = "Intermediate"
+        SET users.status = "Beginner"
         WHERE users.uid = old.r_uid;
     END IF;
 
