@@ -126,7 +126,7 @@ INSERT INTO post_question (qid, uid, resolved, timeposted) VALUES (9, 3, FALSE, 
 INSERT INTO post_question (qid, uid, resolved, timeposted) VALUES (10, 5, FALSE, '2012-11-01 06:25:00');
 
 INSERT INTO post_answers(uid, qid, aid, grade, weight, best, timeposted)
-VALUES (6, 1, 1, 1, 1, FALSE, '2021-08-23 23:11:19');
+VALUES (6, 2, 1, 1, 1, FALSE, '2021-08-23 23:11:19');
 INSERT INTO post_answers(uid, qid, aid, grade, weight, best, timeposted)
 VALUES (1, 1, 4, 0, 1, FALSE, '2013-04-23 16:11:09');
 INSERT INTO post_answers(uid, qid, aid, grade, weight, best, timeposted)
@@ -183,28 +183,28 @@ BEGIN
 END
 
 
-CREATE DEFINER = CURRENT_USER TRIGGER `project`.`likes_BEFORE_DELETE` BEFORE DELETE ON `likes` FOR EACH ROW
+CREATE DEFINER=`root`@`localhost` TRIGGER `project`.`likes_BEFORE_DELETE` BEFORE DELETE ON `likes` FOR EACH ROW
 BEGIN
     DECLARE temp INT DEFAULT 0;
     set temp = (select sum(points)
-                from users, likes
+				from users, likes
                 where likes.uid = users.uid
                 and old.uid = users.uid
                 group by users.uid);
-                
-    if(temp < 20)
-    then UPDATE users
-        SET users.`status` = "Beginner"
-        WHERE users.uid = old.uid;
-    END IF;
-    
-    IF(temp < 50)
+           
+	IF(temp < 50)
     THEN UPDATE users
-        SET users.`status` = "Intermediate"
+		SET users.`status` = "Intermediate"
          WHERE users.uid = old.uid;
     END IF;
+           
+	if(temp < 20)
+    then UPDATE users
+		SET users.`status` = "Beginner"
+        WHERE users.uid = old.uid;
+	END IF;
     
-    update post_answers
+	update post_answers
     set grade = grade - 1
     where aid = old.aid;
 END
