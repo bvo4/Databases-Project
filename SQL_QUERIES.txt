@@ -155,11 +155,9 @@ BEGIN
 
     DECLARE temp INT DEFAULT 0;
     set temp = (select sum(points)
-                from likes, post_answers, users
-                where post_answers.uid = likes.r_uid
-                and users.uid = post_answers.uid
-                and likes.r_uid = new.r_uid
-                group by likes.r_uid);
+				from likes
+				where likes.r_uid = new.r_uid
+				group by likes.r_uid);
                 
     if(temp > 20)
     then UPDATE users
@@ -178,23 +176,20 @@ BEGIN
     where aid = new.aid;
 END
 
-CREATE DEFINER=`root`@`localhost` TRIGGER project.likes_BEFORE_DELETE BEFORE DELETE ON likes FOR EACH ROW
+CREATE DEFINER=`root`@`localhost` TRIGGER `project`.`likes_AFTER_DELETE` AFTER DELETE ON `likes` FOR EACH ROW
 BEGIN
 
     DECLARE temp INT DEFAULT 0;
     set temp = (select sum(points)
-                from likes, post_answers, users
-                where post_answers.uid = likes.r_uid
-                and users.uid = post_answers.uid
-                and likes.r_uid = old.r_uid
-                group by likes.r_uid);
+				from likes
+				where likes.r_uid = old.r_uid
+				group by likes.r_uid);
 
     IF(temp < 50)
     THEN UPDATE users
         SET users.status = "Intermediate"
          WHERE users.uid = old.r_uid;
     END IF;
-
 
     if(temp < 20)
     then UPDATE users
