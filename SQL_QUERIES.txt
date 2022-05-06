@@ -104,16 +104,16 @@ INSERT INTO answers (aid, body) VALUES ('12', 'Try jumping up and down.');
 INSERT INTO answers (aid, body) VALUES ('13', 'Git add git commit.');
 INSERT INTO answers (aid, body) VALUES ('14', 'Buy Dogecoin.');
 
-insert into likes(aid, uid, points) values(1, 3, 1);
-insert into likes(aid, uid, points) values(5, 2, 1);
-insert into likes(aid, uid, points) values(8, 2, 1);
-insert into likes(aid, uid, points) values(7, 1, 1);
-insert into likes(aid, uid, points) values(10, 5, 1);
-insert into likes(aid, uid, points) values(9, 3, 1);
-insert into likes(aid, uid, points) values(3, 4, 1);
-insert into likes(aid, uid, points) values(3, 7, 1);
-insert into likes(aid, uid, points) values(3, 6, 1);
-insert into likes(aid, uid, points) values(3, 3, 1);
+insert into likes(aid, uid, points) values(1, 3, 1, 2);
+insert into likes(aid, uid, points) values(5, 2, 1, 7);
+insert into likes(aid, uid, points) values(8, 2, 1, 9);
+insert into likes(aid, uid, points) values(7, 1, 1, 2);
+insert into likes(aid, uid, points) values(10, 5, 1, 3);
+insert into likes(aid, uid, points) values(9, 3, 1, 4);
+insert into likes(aid, uid, points) values(3, 4, 1, 1);
+insert into likes(aid, uid, points) values(3, 7, 1, 5);
+insert into likes(aid, uid, points) values(3, 6, 1, 7);
+insert into likes(aid, uid, points) values(3, 3, 1, 2);
 
 INSERT INTO post_question (qid, uid, resolved, timeposted) VALUES (1, 3, FALSE, '2013-03-12 01:14:56');
 INSERT INTO post_question (qid, uid, resolved, timeposted) VALUES (2, 5, FALSE, '2017-02-07 05:31:30');
