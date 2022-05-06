@@ -73,18 +73,17 @@ insert into subtopic(stid, tid, sname) VALUES (3, 3, "Algebra 1");
 insert into subtopic(stid, tid, sname) VALUES (4, 4, "Microeconomics");
 insert into subtopic(stid, tid, sname) VALUES (5, 1, "CyberSecurity");
 insert into subtopic(stid, tid, sname) VALUES (6, 5, "Other");
-INSERT INTO subtopic(stid, tid, sname) VALUES (7, 1, 'Other');
-INSERT INTO subtopic(stid, tid, sname) VALUES (8, 2, 'Microbiology');
-INSERT INTO subtopic(stid, tid, sname) VALUES (9, 1, 'Cryptocurrency');
+INSERT INTO subtopic(stid, tid, sname) VALUES (7, 2, 'Microbiology');
+INSERT INTO subtopic(stid, tid, sname) VALUES (8, 1, 'Cryptocurrency');
 
 INSERT INTO questions (qid, stid, title, body) VALUES (1, 3, 'HOW TO 1+1', 'HELP, HOW DO I COMMIT 1+1');
 INSERT INTO questions (qid, stid, title, body) VALUES (2, 4, 'HOW TO PAY TAXES', 'Help, the government is inquiring about my car\'s extended warranty');
 INSERT INTO questions (qid, stid, title, body) VALUES (3, 2, 'HOW TO GROW PLANT', 'My crops keep dying when I feed it coca-cola.  What am I doing wrong.');
 INSERT INTO questions (qid, stid, title, body) VALUES (4, 5, 'HOW TO HACK', 'Hackerman keeps demanding ransom in bittycoin.  How do I pay.');
 INSERT INTO questions (qid, stid, title, body) VALUES (5, 6, 'HOW DO I FLY', 'I try  flapping my arms, but it doesn\'t work.');
-INSERT INTO questions (qid, stid, title, body) VALUES (6, 7, 'Difference between loops?', 'What\'s the difference between a for loop, a while loop, and a do-while loop?');
+INSERT INTO questions (qid, stid, title, body) VALUES (6, 6, 'Difference between loops?', 'What\'s the difference between a for loop, a while loop, and a do-while loop?');
 INSERT INTO questions (qid, stid, title, body) VALUES (7, 3, 'Difference between adding and multiplication', 'What\'s the difference between adding 1+1+1 and 1*3?');
-INSERT INTO questions (qid, stid, title, body) VALUES (8, 6, 'Kingdoms in microbiology?', 'What are the 3 domains of life that live in the microbiology world?');
+INSERT INTO questions (qid, stid, title, body) VALUES (8, 7, 'Kingdoms in microbiology?', 'What are the 3 domains of life that live in the microbiology world?');
 INSERT INTO questions (qid, stid, title, body) VALUES (9, 5, 'Best antivirus program', 'What antivirus program should I download for my computer?  Any recommendations?');
 INSERT INTO questions (qid, stid, title, body) VALUES (10, 9, 'Bitcoin vs. Ethereum', 'What is the difference between Bitcoin and Ethereum?  Which one should I buy into?');
 
